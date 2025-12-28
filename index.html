@@ -134,11 +134,17 @@
             <div class="form-group"><label>CONTACT NUMBER</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10-digit mobile number"></div>
             <div class="form-group"><label>ACADEMIC BRANCH</label><input type="text" required id="branch" placeholder="e.g. Computer Science"></div>
             <div class="form-group"><label>Preliminary Score (%)</label><input type="number" required id="preScore"></div>
-            <button type="submit" class="btn btn-primary">Proceed to Assessment</button>
+            <button type="submit" class="btn btn-primary">Complete Registration</button>
         </form>
     </div>
 
- <div id="instructionArea">
+    <div id="successArea" class="success-message">
+        <h2>✅ Registration Completed Successfully!</h2>
+        <p>Your details have been recorded. Please proceed to read the exam instructions.</p>
+        <button onclick="showInstructions()" class="btn btn-primary">Proceed to Instructions</button>
+    </div>
+
+    <div id="instructionArea">
         <h3 style="color: var(--danger);">Exam Rules (10 Points)</h3>
         <ul style="line-height: 1.8;">
             <li>45 Minutes total duration.</li>
@@ -152,21 +158,41 @@
             <li>Ensure stable internet connectivity.</li>
             <li>Result will be processed post-submission.</li>
         </ul>
-        <button onclick="startExam()" class="btn btn-primary">Start Exam</button>
+        <button onclick="startAssessment()" class="btn btn-success">Proceed to Assessment</button>
     </div>
 
-
-    <div id="examArea" class="exam-layout">
-        <div class="main-exam-area">
-            <div class="timer-strip">Remaining: <span id="timer">45:00</span></div>
-            <form id="assessmentForm">
-                <div id="questionContainer"></div>
-                <div style="margin-top: 40px; display: flex; gap: 20px;">
-                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Save & Next</button>
-                    <button type="submit" id="submitBtn" class="btn btn-submit">Submit Assessment</button>
-                </div>
-            </form>
+    <div id="assessmentArea">
+        <h3>Assessment in Progress...</h3>
+        <p>Question 1 of 35: [Question content will load here]</p>
+        <div style="height: 200px; background: #f9f9f9; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center;">
+            [Assessment Content Area]
         </div>
+        <button class="btn btn-primary" style="margin-top: 20px;">Next Question</button>
+    </div>
+</div>
+
+<script>
+    // Handle Registration Form Submission
+    document.getElementById('regForm').addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop page reload
+        document.getElementById('registrationArea').style.display = 'none';
+        document.getElementById('successArea').style.display = 'block';
+    });
+
+    // Move to Instructions
+    function showInstructions() {
+        document.getElementById('successArea').style.display = 'none';
+        document.getElementById('instructionArea').style.display = 'block';
+    }
+
+    // Move to Assessment
+    function startAssessment() {
+        if(confirm("Are you sure you want to start the assessment? The timer will begin immediately.")) {
+            document.getElementById('instructionArea').style.display = 'none';
+            document.getElementById('assessmentArea').style.display = 'block';
+        }
+    }
+</script>
 
         <div class="sidebar">
             <div class="grid-title">Assessment Navigator</div>
