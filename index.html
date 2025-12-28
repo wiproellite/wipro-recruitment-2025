@@ -8,15 +8,15 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
         :root { 
-            --primary: #4f46e5; /* Modern Indigo */
+            --primary: #4f46e5; 
             --primary-light: #eef2ff;
             --success: #10b981; 
             --danger: #ef4444; 
-            --bg-page: #f8fafc; /* Soft Blue-Grey */
+            --bg-page: #f8fafc; 
             --bg-card: #ffffff;
-            --text-dark: #1e293b; /* Deep Navy/Slate */
+            --text-dark: #1e293b; 
             --text-muted: #64748b;
-            --input-bg: #f1f5f9; /* Non-white input background */
+            --input-bg: #f1f5f9; 
             --font-main: 'Inter', sans-serif;
             --font-heading: 'Poppins', sans-serif;
         }
@@ -31,7 +31,6 @@
 
         h1, h2, h3, .timer-strip, .grid-title, .btn { font-family: var(--font-heading); }
 
-        /* Fullscreen Lock */
         #lockOverlay { 
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: #0f172a; z-index: 10000; color: white; text-align: center; 
@@ -39,10 +38,10 @@
         }
 
         .container { 
-            max-width: 1200px; margin: 30px auto; background: var(--bg-card); 
+            max-width: 1100px; margin: 30px auto; background: var(--bg-card); 
             padding: 40px; border-radius: 16px; 
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); 
-            min-height: 700px;
+            min-height: 500px;
         }
         
         header { 
@@ -51,8 +50,11 @@
         }
         header h1 { color: var(--primary); font-size: 26px; margin: 0; }
 
+        /* Flow Control */
+        #regSuccessArea, #instructionArea, #examArea, #finalSuccessArea { display: none; }
+
         /* Exam Layout */
-        .exam-layout { display: none; gap: 40px; }
+        .exam-layout { display: flex; gap: 40px; }
         .main-exam-area { flex: 3; }
         .sidebar { 
             flex: 1; background: var(--primary-light); padding: 25px; 
@@ -65,54 +67,44 @@
             font-weight: bold; margin-bottom: 25px; 
         }
 
-        /* Question Styling */
         .question-wrapper { display: none; }
         .question-wrapper.active { display: block; }
         .q-meta { color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
-        .q-text { font-size: 20px; line-height: 1.5; color: #0f172a; margin-bottom: 30px; font-weight: 600; }
+        .q-text { font-size: 19px; line-height: 1.5; color: #0f172a; margin-bottom: 30px; font-weight: 600; }
 
-        /* Options - Moving away from white */
         .options label { 
-            display: flex; align-items: center; padding: 18px; 
+            display: flex; align-items: center; padding: 15px; 
             border: 2px solid transparent; border-radius: 12px; 
-            margin-bottom: 12px; cursor: pointer; transition: 0.3s; 
-            background: #f8fafc; /* Distinct greyish background */
-            font-size: 16px; font-weight: 500;
+            margin-bottom: 10px; cursor: pointer; transition: 0.3s; 
+            background: #f1f5f9; font-size: 16px;
         }
-        .options label:hover { background: #e2e8f0; border-color: var(--primary); }
-        .options input { margin-right: 15px; width: 18px; height: 18px; accent-color: var(--primary); }
+        .options label:hover { background: #e2e8f0; }
         .options input:checked + span { color: var(--primary); font-weight: 700; }
+        .options input { margin-right: 15px; width: 18px; height: 18px; accent-color: var(--primary); }
 
-        /* Sidebar Grid Palette */
-        .grid-title { font-size: 14px; margin-bottom: 20px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
         .grid-item { 
-            padding: 12px 0; border: 1px solid #cbd5e0; border-radius: 8px; 
+            padding: 10px 0; border: 1px solid #cbd5e0; border-radius: 8px; 
             text-align: center; cursor: pointer; font-size: 14px; font-weight: 700; 
-            background: white; color: var(--text-dark);
+            background: white;
         }
-        .grid-item.active-idx { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4); }
-        .grid-item.answered { background: var(--success); color: white; border-color: var(--success); }
+        .grid-item.active-idx { background: var(--primary); color: white; }
+        .grid-item.answered { background: var(--success); color: white; }
 
-        /* Form Inputs - Moving away from white */
+        .form-group { margin-bottom: 20px; }
+        .form-group label { font-weight: 600; font-size: 14px; color: var(--text-muted); display: block; margin-bottom: 8px; }
         input[type="text"], input[type="email"], input[type="tel"], input[type="number"] { 
-            width: 100%; padding: 15px; border: 2px solid #e2e8f0; 
-            border-radius: 10px; margin-top: 8px; font-size: 16px; 
-            background-color: var(--input-bg); color: var(--text-dark); 
-            transition: 0.3s;
+            width: 100%; padding: 12px; border: 2px solid #e2e8f0; 
+            border-radius: 8px; background: var(--input-bg); box-sizing: border-box;
         }
-        input:focus { outline: none; border-color: var(--primary); background-color: #fff; }
+
+        .btn { padding: 15px 25px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; width: 100%; }
+        .nav-controls { display: flex; justify-content: space-between; margin-top: 30px; }
         
-        .form-group { margin-bottom: 25px; }
-        .form-group label { font-weight: 600; font-size: 14px; color: var(--text-muted); }
-
-        .btn { padding: 16px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-primary { background: var(--primary); color: white; width: 100%; }
-        .btn-primary:hover { background: #4338ca; transform: translateY(-1px); }
-        .btn-submit { background: var(--success); color: white; display: none; width: 100%; }
-
-        #successArea { text-align: center; padding: 60px 0; }
         .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .success-screen { text-align: center; padding: 40px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -120,259 +112,222 @@
 <div id="lockOverlay">
     <h2>SECURITY ALERT: FULLSCREEN REQUIRED</h2>
     <p>Testing environment must remain in full-screen mode.</p>
-    <button onclick="forceFullscreen()" class="btn btn-primary" style="width: auto; margin-top: 20px;">Return to Test</button>
+    <button onclick="forceFullscreen()" class="btn btn-primary" style="margin-top: 20px;">Return to Test</button>
 </div>
 
 <div class="container">
     <header><h1>Wipro Elite NTH Digital Assessment</h1></header>
 
     <div id="registrationArea">
-        <h3 style="margin-bottom: 25px; font-size: 22px;">Candidate Details</h3>
+        <h3 style="margin-bottom: 25px;">Candidate Registration</h3>
         <form id="regForm">
-            <div class="form-group"><label>FULL NAME</label><input type="text" required id="name" placeholder="As per Aadhaar"></div>
-            <div class="form-group"><label>EMAIL ID</label><input type="email" required id="email" placeholder="example@college.edu"></div>
-            <div class="form-group"><label>CONTACT NUMBER</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10-digit mobile number"></div>
-            <div class="form-group"><label>ACADEMIC BRANCH</label><input type="text" required id="branch" placeholder="e.g. Computer Science"></div>
-            <div class="form-group"><label>Preliminary Score (%)</label><input type="number" required id="preScore"></div>
-            <button type="submit" class="btn btn-primary">Complete Registration</button>
+            <div class="form-group"><label>FULL NAME</label><input type="text" required id="userName" placeholder="As per Aadhaar"></div>
+            <div class="form-group"><label>EMAIL ID</label><input type="email" required id="userEmail" placeholder="example@college.edu"></div>
+            <div class="form-group"><label>CONTACT NUMBER</label><input type="tel" required pattern="[0-9]{10}" placeholder="10-digit mobile number"></div>
+            <div class="form-group"><label>ACADEMIC BRANCH</label><input type="text" required placeholder="e.g. Computer Science"></div>
+            <div class="form-group"><label>PRELIMINARY SCORE (%)</label><input type="number" required></div>
+            <button type="submit" class="btn btn-primary" style="width:100%">Complete Registration</button>
         </form>
     </div>
 
-    <div id="successArea" class="success-message">
-        <h2>✅ Registration Completed Successfully!</h2>
-        <p>Your details have been recorded. Please proceed to read the exam instructions.</p>
+    <div id="regSuccessArea" class="success-screen">
+        <div style="font-size: 60px; color: var(--success);">✔</div>
+        <h2 style="color: var(--success);">Registration Completed Successfully!</h2>
+        <p>Your details have been verified. Click below to read the mandatory exam instructions.</p>
         <button onclick="showInstructions()" class="btn btn-primary">Proceed to Instructions</button>
     </div>
 
     <div id="instructionArea">
-        <h3 style="color: var(--danger);">Exam Rules (10 Points)</h3>
-        <ul style="line-height: 1.8;">
-            <li>45 Minutes total duration.</li>
-            <li>35 Questions (Quant, Logical, English, Technical).</li>
-            <li>No Back Button: You cannot revisit previous questions.</li>
-            <li>Full-screen mode is mandatory.</li>
-            <li>Tab switching will be flagged as malpractice.</li>
-            <li>Do not refresh the page.</li>
-            <li>Submit button appears only on the 35th question.</li>
-            <li>Select an answer to enable the 'Next' button.</li>
-            <li>Ensure stable internet connectivity.</li>
-            <li>Result will be processed post-submission.</li>
+        <h3 style="color: var(--danger);">Exam Rules & Instructions</h3>
+        <ul style="line-height: 2; color: var(--text-dark);">
+            <li><b>Duration:</b> 45 Minutes total.</li>
+            <li><b>Navigation:</b> No Back Button. You cannot revisit previous questions.</li>
+            <li><b>Security:</b> Full-screen mode and webcam monitoring are active.</li>
+            <li><b>Malpractice:</b> Tab switching or refreshing will terminate the session.</li>
+            <li><b>Submission:</b> Results are auto-submitted when the timer hits zero.</li>
         </ul>
-        <button onclick="startAssessment()" class="btn btn-success">Proceed to Assessment</button>
+        <button onclick="startExam()" class="btn btn-success" style="margin-top: 20px;">I Understand, Proceed to Assessment</button>
     </div>
 
-    <div id="assessmentArea">
-        <h3>Assessment in Progress...</h3>
-        <p>Question 1 of 35: [Question content will load here]</p>
-        <div style="height: 200px; background: #f9f9f9; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center;">
-            [Assessment Content Area]
-        </div>
-        <button class="btn btn-primary" style="margin-top: 20px;">Next Question</button>
-    </div>
-</div>
+    <div id="examArea">
+        <div class="exam-layout">
+            <div class="main-exam-area">
+                <div id="questionContainer">
+                    </div>
+                <div class="nav-controls">
+                    <div></div> <button id="nextBtn" onclick="nextQuestion()" class="btn btn-primary" style="width: 150px;">Next</button>
+                    <button id="submitBtn" onclick="finishExam()" class="btn btn-success" style="display:none; width: 150px;">Submit Test</button>
+                </div>
+            </div>
 
-<script>
-    // Handle Registration Form Submission
-    document.getElementById('regForm').addEventListener('submit', function(e) {
-        e.preventDefault(); // Stop page reload
-        document.getElementById('registrationArea').style.display = 'none';
-        document.getElementById('successArea').style.display = 'block';
-    });
-
-    // Move to Instructions
-    function showInstructions() {
-        document.getElementById('successArea').style.display = 'none';
-        document.getElementById('instructionArea').style.display = 'block';
-    }
-
-    // Move to Assessment
-    function startAssessment() {
-        if(confirm("Are you sure you want to start the assessment? The timer will begin immediately.")) {
-            document.getElementById('instructionArea').style.display = 'none';
-            document.getElementById('assessmentArea').style.display = 'block';
-        }
-    }
-</script>
-
-        <div class="sidebar">
-            <div class="grid-title">Assessment Navigator</div>
-            <div class="question-grid" id="qGrid"></div>
-            <div style="margin-top: 30px; font-size: 13px; color: var(--text-muted); border-top: 1px solid #cbd5e0; padding-top: 20px;">
-                <p><span class="status-dot" style="background: var(--success);"></span> Answered</p>
-                <p><span class="status-dot" style="background: var(--primary);"></span> Current</p>
-                <p><span class="status-dot" style="background: #fff; border: 1px solid #cbd5e0;"></span> Not Visited</p>
+            <div class="sidebar">
+                <div class="timer-strip" id="timer">45:00</div>
+                <div class="grid-title">Question Navigator</div>
+                <div class="question-grid" id="qGrid"></div>
+                <div style="margin-top: 30px; font-size: 13px; color: var(--text-muted);">
+                    <p><span class="status-dot" style="background: var(--success);"></span> Answered</p>
+                    <p><span class="status-dot" style="background: var(--primary);"></span> Current</p>
+                    <p><span class="status-dot" style="background: white; border: 1px solid #cbd5e0;"></span> Not Visited</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div id="successArea" style="display: none;">
-        <div style="font-size: 80px; color: var(--success);">✔</div>
-        <h1 style="color: var(--success);">Test Completed Successfully</h1>
-        <p style="font-size: 18px; color: var(--text-muted);">Thank you for participating. Your response has been securely encrypted and uploaded to the Wipro recruitment servers.</p>
-        <p>You may now close this window.</p>
+    <div id="finalSuccessArea" class="success-screen">
+        <div style="font-size: 60px; color: var(--success);">🎉</div>
+        <h2 style="color: var(--success);">Assessment Submitted!</h2>
+        <p>Thank you, <span id="displayUser"></span>. Your responses have been securely recorded.</p>
+        <p style="color: var(--text-muted);">Wipro Recruitment Team will contact you via email.</p>
     </div>
 </div>
 
 <script>
     const questions = [
-        { q: "A sum of money doubles itself in 8 years at simple interest. What is the rate of interest?", o: ["10.5%", "12.5%", "15%", "8%"], s: "Quant" },
-        { q: "If x:y = 3:4 and y:z = 8:9, what is x:z?", o: ["1:2", "2:3", "3:2", "4:5"], s: "Quant" },
-        { 
-    q: "A vessel contains 60 liters of milk. 12 liters are taken out and replaced with water. This process is repeated once more. How much milk is now left in the vessel?", 
-    o: ["38.4 liters", "40 liters", "36 liters", "42.8 liters"], 
-    s: "Quant" 
-},
-{ 
-    q: "A is thrice as efficient as B and is therefore able to finish a piece of work in 60 days less than B. Find the time in which they can complete the work together.", 
-    o: ["22.5 days", "25 days", "30 days", "20 days"], 
-    s: "Quant" 
-},
-{ 
-    q: "Find the units digit in the expansion of $7^{105} + 3^{58}$.", 
-    o: ["6", "4", "2", "0"], 
-    s: "Quant" 
-},
-{ 
-    q: "Two pipes A and B can fill a tank in 20 and 30 hours respectively. A third pipe C empties the tank at 45 liters/minute. If all three pipes are opened, the tank fills in 15 hours. What is the capacity of the tank?", 
-    o: ["162,000 liters", "150,000 liters", "180,000 liters", "120,000 liters"], 
-    s: "Quant" 
-},
-{ 
-    q: "A sum of money at compound interest amounts to thrice itself in 3 years. In how many years will it be 9 times itself?", 
-    o: ["6 years", "9 years", "12 years", "15 years"], 
-    s: "Quant" 
-},
-{ 
-    q: "In a class, the average weight of 8 men increases by 2.5 kg when a new man replaces one of them weighing 65 kg. What is the weight of the new man?", 
-    o: ["85 kg", "75 kg", "80 kg", "90 kg"], 
-    s: "Quant" 
-},
-{ 
-    q: "Two dice are thrown simultaneously. What is the probability that the sum of the numbers appearing on the dice is a prime number?", 
-    o: ["5/12", "7/12", "1/2", "1/3"], 
-    s: "Quant" 
-},
-        { q: "A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D?", o: ["Grandmother", "Grandfather", "Daughter", "Granddaughter"], s: "Logical" },
-        { q: "Identify the next number: 10, 14, 26, 42, 70, ?", o: ["114", "100", "112", "120"], s: "Logical" },
-        { q: "If '+' means 'x', '-' means '+', 'x' means '/' and '/' means '-', then 6+2-10x5/2 = ?", o: ["12", "15", "18", "10"], s: "Logical" },
-        { q: "Odd one out: 3, 5, 7, 9, 11", o: ["3", "5", "7", "9"], s: "Logical" },
-        { q: "Day after tomorrow is Sunday. What day was it yesterday?", o: ["Wednesday", "Thursday", "Friday", "Saturday"], s: "Logical" },
-        { q: "Choose the synonym for 'ABANDON':", o: ["Keep", "Forsake", "Adopt", "Cherish"], s: "English" },
-        { q: "Choose the antonym for 'ENORMOUS':", o: ["Tiny", "Huge", "Gigantic", "Heavy"], s: "English" },
-        { q: "Fill in: I haven't seen him ____ last Monday.", o: ["for", "since", "from", "by"], s: "English" },
-        { q: "Correct spelling:", o: ["Accomodation", "Accommodation", "Acomodation", "Accomodatoin"], s: "English" },
-        { q: "Identify the part of speech of the word 'Very' in 'Very fast':", o: ["Adjective", "Adverb", "Noun", "Verb"], s: "English" },
-        { q: "Active voice: 'The cake was eaten by the boy'", o: ["The boy ate the cake", "The boy eats cake", "The boy has eaten", "None"], s: "English" },
-        { q: "Idiom meaning: 'Once in a blue moon'", o: ["Frequently", "Rarely", "Always", "Every night"], s: "English" },
-        { q: "Which protocol is used for email transmission?", o: ["HTTP", "SMTP", "FTP", "SNMP"], s: "Technical" },
-        { q: "What is the size of 'int' data type in C (32-bit)?", o: ["2 bytes", "4 bytes", "8 bytes", "1 byte"], s: "Technical" },
-        { q: "Which layer of OSI handles encryption?", o: ["Session", "Presentation", "Application", "Transport"], s: "Technical" },
-        { q: "In Python, which keyword is used to create a function?", o: ["func", "define", "def", "function"], s: "Technical" },
-        { q: "Which data structure follows LIFO?", o: ["Queue", "Linked List", "Stack", "Array"], s: "Technical" },
-        { q: "The primary key of a table must be:", o: ["Unique", "Not Null", "Both A & B", "None"], s: "Technical" },
-        { 
-        q: "In Python, what is the output of: \n def func(a, b=[]): \n   b.append(a) \n   return b \n print(func(1), func(2))", 
-        o: ["[1] [2]", "[1] [1, 2]", "[1, 2] [1, 2]", "Error"], 
-        s: "Python" 
-    },
-    { 
-        q: "Which concept in Java prevents a class from being inherited while still allowing it to be instantiated?", 
-        o: ["Abstract class", "Final class", "Private constructor", "Static class"], 
-        s: "Java" 
-    },
-    { 
-        q: "In Python, which of the following is true about the 'Global Interpreter Lock' (GIL)?", 
-        o: ["It allows multiple threads to run Python bytecode at once", "It prevents multi-threading entirely", "It ensures only one thread executes Python bytecode at a time", "It is only present in Jython"], 
-        s: "Python" 
-    },
-    { 
-        q: "What will happen if a 'finally' block and a 'try' block both contain a 'return' statement in Java?", 
-        o: ["Compile-time error", "Try block return is executed", "Finally block return is executed", "Both return statements are executed"], 
-        s: "Java" 
-    },
-    { 
-        q: "What is the purpose of '__slots__' in a Python class definition?", 
-        o: ["To speed up method calls", "To restrict the creation of instance attributes to save memory", "To allow multiple inheritance", "To define private variables"], 
-        s: "Python" 
-    },
-    { 
-        q: "What is 'Method Hiding' in Java?", 
-        o: ["Overriding an instance method", "Defining a static method in a subclass with the same signature as one in the superclass", "Using the private keyword", "Writing a method with no body"], 
-        s: "Java" 
-    },
-    { 
-        q: "In Python, what does the 'nonlocal' keyword do?", 
-        o: ["Declares a global variable", "Accesses a variable in the nearest enclosing scope that is not global", "Creates a variable that persists across function calls", "None of the above"], 
-        s: "Python" 
-    },
-        { q: "1 Gigabyte is equal to:", o: ["1024 MB", "1000 MB", "1024 KB", "100 MB"], s: "Mix" }
+        // 1-7: TOUGH QUANT
+        { q: "A vessel contains 60 liters of milk. 12 liters are taken out and replaced with water. This process is repeated once more. How much milk is left?", o: ["38.4 liters", "40 liters", "36 liters", "42.8 liters"], s: "Quant" },
+        { q: "A is thrice as efficient as B and finishes work in 60 days less than B. Find time if they work together.", o: ["22.5 days", "25 days", "30 days", "20 days"], s: "Quant" },
+        { q: "Find the units digit in the expansion of 7^105 + 3^58.", o: ["6", "4", "2", "0"], s: "Quant" },
+        { q: "Two pipes A and B fill in 20 and 30 hrs. C empties at 45 L/min. Together they fill in 15 hrs. Find tank capacity.", o: ["162,000 L", "150,000 L", "180,000 L", "120,000 L"], s: "Quant" },
+        { q: "A sum amounts to thrice itself in 3 years at CI. In how many years will it be 9 times itself?", o: ["6 years", "9 years", "12 years", "15 years"], s: "Quant" },
+        { q: "Average weight of 8 men increases by 2.5 kg when a new man replaces one weighing 65 kg. New man's weight?", o: ["85 kg", "75 kg", "80 kg", "90 kg"], s: "Quant" },
+        { q: "Two dice are thrown. What is the probability that the sum is a prime number?", o: ["5/12", "7/12", "1/2", "1/3"], s: "Quant" },
+
+        // 8-14: TOUGH PYTHON & JAVA
+        { q: "Python output:\ndef f(a, b=[]):\n  b.append(a)\n  return b\nprint(f(1), f(2))", o: [" [1, 2] [1, 2]", "[1] [2]", "[1] [1, 2]", "Error"], s: "Python" },
+        { q: "Which Java concept prevents inheritance while allowing instantiation?", o: ["Final class", "Abstract class", "Private constructor", "Static class"], s: "Java" },
+        { q: "True statement about Python's 'Global Interpreter Lock' (GIL):", o: ["Only one thread executes bytecode at once", "Enables multi-core speed", "Only in PyPy", "None"], s: "Python" },
+        { q: "Java: If both 'try' and 'finally' have 'return' statements:", o: ["Finally block return wins", "Try block return wins", "Compilation fails", "Runtime error"], s: "Java" },
+        { q: "Purpose of '__slots__' in Python?", o: ["Restrict attributes to save memory", "Allow private vars", "Speeding up loops", "Inheritance"], s: "Python" },
+        { q: "What is 'Method Hiding' in Java?", o: ["Static method shadowing", "Instance overriding", "Encapsulation", "Hiding vars"], s: "Java" },
+        { q: "Python 'nonlocal' keyword purpose:", o: ["Modify var in nearest non-global scope", "Declare global", "Create static var", "Private access"], s: "Python" },
+
+        // 15-21: LOGICAL REASONING
+        { q: "If MONKEY is coded as XDJMNL, how is TIGER coded?", o: ["QDFHS", "SDFHS", "QDFGR", "RDFSJ"], s: "Logical" },
+        { q: "A man walks 5km North, turns Right and walks 3km, then turns Right and walks 5km. How far is he from start?", o: ["3 km", "5 km", "8 km", "0 km"], s: "Logical" },
+        { q: "Syllogism: All Pens are Cups. All Cups are Caps.", o: ["All Pens are Caps", "All Caps are Pens", "Some Caps are not Pens", "None"], s: "Logical" },
+        { q: "Next term: 2, 6, 12, 20, 30, ?", o: ["42", "40", "44", "48"], s: "Logical" },
+        { q: "Pointing to a lady, a man said 'Her daughter is the only granddaughter of my mother'. Relation?", o: ["Wife", "Sister", "Cousin", "Mother"], s: "Logical" },
+        { q: "Find odd one: 121, 144, 169, 186, 225", o: ["186", "144", "169", "225"], s: "Logical" },
+        { q: "If A+B means A is son of B, A-B means A is wife of B. What is P+R-Q?", o: ["Q is father of P", "Q is son of P", "Q is uncle of P", "None"], s: "Logical" },
+
+        // 22-28: VERBAL ABILITY
+        { q: "Synonym of 'PINNACLE':", o: ["Peak", "Base", "Valley", "Middle"], s: "Verbal" },
+        { q: "Antonym of 'ARCHAIC':", o: ["Modern", "Ancient", "Old", "Fresh"], s: "Verbal" },
+        { q: "Choose correct: 'Neither the teacher nor the students ____ present.'", o: ["were", "was", "is", "has"], s: "Verbal" },
+        { q: "Fill: He is proficient ___ Java and Python.", o: ["in", "at", "with", "for"], s: "Verbal" },
+        { q: "Complete: 'If I had studied harder, I ____ the exam.'", o: ["would have passed", "will pass", "would pass", "passed"], s: "Verbal" },
+        { q: "Meaning of 'Burn the midnight oil':", o: ["Work late into night", "Waste energy", "Cook late", "Ignore sleep"], s: "Verbal" },
+        { q: "Passive: 'The manager signed the documents.'", o: ["Documents were signed by manager", "Documents signed by manager", "Manager was signed", "None"], s: "Verbal" },
+
+        // 29-35: TECHNICAL/CORE CS
+        { q: "Which ACID property ensures data remains even after system failure?", o: ["Durability", "Atomicity", "Consistency", "Isolation"], s: "CS" },
+        { q: "OS: Excessive swapping of pages is called:", o: ["Thrashing", "Paging", "Segmentation", "Caching"], s: "CS" },
+        { q: "IP Address Range for Class C:", o: ["192-223", "128-191", "1-126", "224-239"], s: "CS" },
+        { q: "Worst-case complexity of Heap Sort:", o: ["O(n log n)", "O(n^2)", "O(n)", "O(log n)"], s: "CS" },
+        { q: "SDLC: Model allowing customer feedback at every stage:", o: ["Agile", "Waterfall", "V-Model", "Spiral"], s: "CS" },
+        { q: "C: What is 'int *p;'?", o: ["Pointer to an integer", "Integer variable", "Address of pointer", "None"], s: "CS" },
+        { q: "SQL: Command to remove all rows without removing structure:", o: ["TRUNCATE", "DROP", "DELETE", "REMOVE"], s: "CS" }
     ];
 
-    let current = 0;
-    const container = document.getElementById('questionContainer');
-    const gridEl = document.getElementById('qGrid');
+    let currentIdx = 0;
+    let timerInterval;
 
-    questions.forEach((item, i) => {
-        const wrapper = document.createElement('div');
-        wrapper.className = `question-wrapper ${i === 0 ? 'active' : ''}`;
-        wrapper.id = `q-wrapper-${i}`;
-        wrapper.innerHTML = `
-            <span class="q-meta">${item.s} | Question ${i + 1}</span>
-            <p class="q-text">${item.q}</p>
-            <div class="options">
-                ${item.o.map(opt => `
-                    <label>
-                        <input type="radio" name="q${i}" value="${opt}" onchange="markAnswered(${i})">
-                        <span>${opt}</span>
-                    </label>
-                `).join('')}
-            </div>
-        `;
-        container.appendChild(wrapper);
+    // 1. Registration Submission
+    document.getElementById('regForm').onsubmit = (e) => {
+        e.preventDefault();
+        document.getElementById('displayUser').innerText = document.getElementById('userName').value;
+        document.getElementById('registrationArea').style.display = 'none';
+        document.getElementById('regSuccessArea').style.display = 'block';
+    };
 
-        const btn = document.createElement('div');
-        btn.className = 'grid-item';
-        btn.id = `grid-item-${i}`;
-        btn.innerText = i + 1;
-        btn.onclick = () => jumpTo(i);
-        gridEl.appendChild(btn);
-    });
+    // 2. Show Instructions
+    function showInstructions() {
+        document.getElementById('regSuccessArea').style.display = 'none';
+        document.getElementById('instructionArea').style.display = 'block';
+    }
 
-    function jumpTo(index) {
-        document.querySelector('.question-wrapper.active').classList.remove('active');
-        document.getElementById(`q-wrapper-${index}`).classList.add('active');
-        current = index;
-        updateUI();
+    // 3. Start Exam
+    function startExam() {
+        if(confirm("Confirm to start the assessment. Timer starts now.")) {
+            document.getElementById('instructionArea').style.display = 'none';
+            document.getElementById('examArea').style.display = 'block';
+            initQuestions();
+            startTimer(45);
+            forceFullscreen();
+        }
+    }
+
+    function initQuestions() {
+        const container = document.getElementById('questionContainer');
+        const grid = document.getElementById('qGrid');
+        
+        questions.forEach((item, i) => {
+            // Create Question HTML
+            const div = document.createElement('div');
+            div.className = `question-wrapper ${i === 0 ? 'active' : ''}`;
+            div.id = `q-wrap-${i}`;
+            div.innerHTML = `
+                <span class="q-meta">${item.s} | Question ${i + 1} of ${questions.length}</span>
+                <p class="q-text">${item.q}</p>
+                <div class="options">
+                    ${item.o.map(opt => `
+                        <label>
+                            <input type="radio" name="q${i}" value="${opt}" onchange="markAnswered(${i})">
+                            <span>${opt}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+            container.appendChild(div);
+
+            // Create Grid Item
+            const gItem = document.createElement('div');
+            gItem.className = 'grid-item' + (i === 0 ? ' active-idx' : '');
+            gItem.id = `grid-${i}`;
+            gItem.innerText = i + 1;
+            grid.appendChild(gItem);
+        });
     }
 
     function markAnswered(index) {
-        document.getElementById(`grid-item-${index}`).classList.add('answered');
-    }
-
-    function updateUI() {
-        document.querySelectorAll('.grid-item').forEach(el => el.classList.remove('active-idx'));
-        document.getElementById(`grid-item-${current}`).classList.add('active-idx');
-        const isLast = current === questions.length - 1;
-        document.getElementById('nextBtn').style.display = isLast ? 'none' : 'block';
-        document.getElementById('submitBtn').style.display = isLast ? 'block' : 'none';
+        document.getElementById(`grid-${index}`).classList.add('answered');
     }
 
     function nextQuestion() {
-        if (current < questions.length - 1) jumpTo(current + 1);
+        // Check if current question is answered (optional rule)
+        const selected = document.querySelector(`input[name="q${currentIdx}"]:checked`);
+        if(!selected) {
+            alert("Please select an answer to proceed.");
+            return;
+        }
+
+        if (currentIdx < questions.length - 1) {
+            document.getElementById(`q-wrap-${currentIdx}`).classList.remove('active');
+            document.getElementById(`grid-${currentIdx}`).classList.remove('active-idx');
+            
+            currentIdx++;
+            
+            document.getElementById(`q-wrap-${currentIdx}`).classList.add('active');
+            document.getElementById(`grid-${currentIdx}`).classList.add('active-idx');
+            
+            if(currentIdx === questions.length - 1) {
+                document.getElementById('nextBtn').style.display = 'none';
+                document.getElementById('submitBtn').style.display = 'block';
+            }
+        }
     }
 
-    document.getElementById('regForm').onsubmit = (e) => {
-        e.preventDefault();
-        document.getElementById('registrationArea').style.display = 'none';
-        document.getElementById('instructionArea').style.display = 'block';
-    };
-
-    function startExam() {
-        forceFullscreen();
-        document.getElementById('instructionArea').style.display = 'none';
-        document.getElementById('examArea').style.display = 'flex';
-        updateUI();
-        startTimer();
+    function startTimer(minutes) {
+        let time = minutes * 60;
+        timerInterval = setInterval(() => {
+            let m = Math.floor(time / 60);
+            let s = time % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if (time-- <= 0) {
+                clearInterval(timerInterval);
+                finishExam();
+            }
+        }, 1000);
     }
 
     function forceFullscreen() {
@@ -381,27 +336,19 @@
         document.getElementById('lockOverlay').style.display = 'none';
     }
 
-    function startTimer() {
-        let sec = 45 * 60;
-        const clock = setInterval(() => {
-            let mins = Math.floor(sec / 60);
-            let ds = sec % 60;
-            document.getElementById('timer').innerText = `${mins}:${ds < 10 ? '0' : ''}${ds}`;
-            if (sec-- <= 0) { clearInterval(clock); document.getElementById('assessmentForm').onsubmit(); }
-        }, 1000);
-    }
-
     document.addEventListener('fullscreenchange', () => {
-        if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'flex') {
+        if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'block') {
             document.getElementById('lockOverlay').style.display = 'flex';
         }
     });
 
-    document.getElementById('assessmentForm').onsubmit = (e) => {
-        if(e) e.preventDefault();
+    function finishExam() {
+        clearInterval(timerInterval);
         document.getElementById('examArea').style.display = 'none';
-        document.getElementById('successArea').style.display = 'block';
-    };
+        document.getElementById('finalSuccessArea').style.display = 'block';
+        if (document.fullscreenElement) document.exitFullscreen();
+    }
 </script>
+
 </body>
 </html>
