@@ -117,26 +117,70 @@
     <header><h1>Wipro Elite NTH Digital Assessment</h1></header>
 
     <div id="registrationArea">
-        <h3 style="margin-bottom: 20px; font-family: var(--font-heading);">Candidate Registration</h3>
-        <form id="regForm">
-            <div style="margin-bottom: 15px;"><label style="font-size: 12px; font-weight: bold; color: #64748b;">FULL NAME</label><input type="text" required id="name" placeholder="John Doe"></div>
-            <div style="margin-bottom: 15px;"><label style="font-size: 12px; font-weight: bold; color: #64748b;">EMAIL ID</label><input type="email" required id="email" placeholder="john@example.com"></div>
-            <div style="margin-bottom: 15px;"><label style="font-size: 12px; font-weight: bold; color: #64748b;">MOBILE</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10 Digit Number"></div>
-            <button type="submit" class="btn btn-primary">Begin Assessment</button>
+    <h3 style="margin-bottom: 20px; font-family: var(--font-heading);">Candidate Registration</h3>
+    <form id="regForm">
+        <div style="margin-bottom: 15px;">
+            <label style="font-size: 12px; font-weight: bold; color: #64748b;">FULL NAME</label>
+            <input type="text" required id="name" placeholder="John Doe">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="font-size: 12px; font-weight: bold; color: #64748b;">EMAIL ID</label>
+            <input type="email" required id="email" placeholder="john@example.com">
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="font-size: 12px; font-weight: bold; color: #64748b;">MOBILE</label>
+            <input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10 Digit Number">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="font-size: 12px; font-weight: bold; color: #64748b;">BRANCH</label>
+            <select id="branch" required style="width: 100%; padding: 14px; border: 2px solid #cbd5e0; border-radius: 8px; background-color: var(--input-field-bg); font-size: 16px; box-sizing: border-box;">
+                <option value="" disabled selected>Select your branch</option>
+                <option value="CSE">Computer Science (CSE)</option>
+                <option value="ECE">Electronics (ECE)</option>
+                <option value="IT">Information Technology (IT)</option>
+                <option value="MECH">Mechanical (MECH)</option>
+                <option value="CIVIL">Civil Engineering</option>
+            </select>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <label style="font-size: 12px; font-weight: bold; color: #64748b;">PRELIMINARY PERCENTAGE/SCORE</label>
+            <input type="number" required id="prelimScore" min="0" max="100" placeholder="Enter Score (e.g. 85)">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Proceed to Instructions</button>
+    </form>
+</div>
+
+<div id="instructionArea" style="display: none; background: #fff; padding: 25px; border-radius: 12px; border: 1px solid #e2e8f0;">
+    <h3 style="font-family: var(--font-heading); color: var(--primary); border-bottom: 2px solid #eef2ff; padding-bottom: 10px;">Exam Instructions</h3>
+    <ul style="font-size: 14px; line-height: 1.8; color: #334155; padding-left: 20px;">
+        <li><b>Total Duration:</b> You have 40 minutes to complete 35 questions.</li>
+        <li><b>Navigation:</b> Use the "Question Navigator" on the right to jump between questions.</li>
+        <li><b>Auto-Save:</b> Clicking "Save & Next" records your response for that question.</li>
+        <li><b>Fullscreen Mode:</b> The exam will run in mandatory Fullscreen. Exiting will trigger a security lock.</li>
+        <li><b>Anti-Cheat:</b> Do not switch tabs or open other applications. Doing so may lead to disqualification.</li>
+        <li><b>Calculator:</b> Use of external calculators or mobile phones is strictly prohibited.</li>
+        <li><b>Scoring:</b> Each correct answer carries 1 mark. There is no negative marking.</li>
+        <li><b>Stability:</b> Ensure you have a stable internet connection before starting.</li>
+        <li><b>Final Submit:</b> The "Final Submit" button will only appear on the last question.</li>
+        <li><b>Auto-Submission:</b> When the timer hits 00:00, your test will be submitted automatically.</li>
+    </ul>
+    <button onclick="startActualExam()" class="btn btn-primary" style="margin-top: 15px;">I Have Read the Instructions - Start Exam</button>
+</div>
+
+<div id="examArea" class="exam-layout">
+    <div class="main-exam-area">
+        <div class="timer-strip">Session Time: <span id="timer">40:00</span></div>
+        <form id="assessmentForm">
+            <div id="questionContainer"></div>
+            <div style="margin-top: 30px; display: flex; gap: 15px;">
+                <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Save & Next</button>
+                <button type="submit" id="submitBtn" class="btn btn-submit">Final Submit Assessment</button>
+            </div>
         </form>
     </div>
-
-    <div id="examArea" class="exam-layout">
-        <div class="main-exam-area">
-            <div class="timer-strip">Session Time: <span id="timer">45:00</span></div>
-            <form id="assessmentForm">
-                <div id="questionContainer"></div>
-                <div style="margin-top: 30px; display: flex; gap: 15px;">
-                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Save & Next</button>
-                    <button type="submit" id="submitBtn" class="btn btn-submit">Final Submit Assessment</button>
-                </div>
-            </form>
-        </div>
+    </div>
 
         <div class="sidebar">
             <h4 style="margin: 0 0 15px 0; font-size: 13px; color: #64748b; font-family: var(--font-heading); text-transform: uppercase;">Question Navigator</h4>
