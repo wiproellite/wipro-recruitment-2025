@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wipro NTH | Secure Assessment Portal</title>
+    <title>Wipro Elite NTH | Advanced Secure Portal</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
         :root { 
             --primary: #4f46e5; 
-            --primary-light: #eef2ff;
             --success: #10b981; 
-            --danger: #ef4444; 
-            --bg-page: #f8fafc; 
+            --bg-page: #f1f5f9; 
             --bg-card: #ffffff;
-            --text-dark: #1e293b; 
-            --text-muted: #64748b;
-            --input-bg: #f1f5f9; 
+            --text-dark: #0f172a; 
+            --input-field-bg: #e2e8f0; 
+            --option-bg: #f8fafc;
+            --grid-item-bg: #e2e8f0; /* Non-white grid background */
             --font-main: 'Inter', sans-serif;
             --font-heading: 'Poppins', sans-serif;
         }
@@ -27,163 +26,138 @@
             margin: 0; 
             user-select: none; 
             color: var(--text-dark);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        h1, h2, h3, .timer-strip, .grid-title, .btn { font-family: var(--font-heading); }
-
         #lockOverlay { 
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: #0f172a; z-index: 10000; color: white; text-align: center; 
-            justify-content: center; align-items: center; flex-direction: column; 
+            display: none; position: fixed; inset: 0; background: #020617; 
+            z-index: 10000; color: white; text-align: center; 
+            justify-content: center; align-items: center; flex-direction: column; padding: 20px; 
         }
 
         .container { 
-            max-width: 1100px; margin: 30px auto; background: var(--bg-card); 
-            padding: 40px; border-radius: 16px; 
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); 
-            min-height: 500px;
+            max-width: 1100px; margin: 15px auto; background: var(--bg-card); 
+            padding: 20px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); 
         }
-        
-        header { 
-            text-align: center; border-bottom: 2px solid var(--primary-light); 
-            margin-bottom: 30px; padding-bottom: 20px; 
+
+        header { text-align: center; border-bottom: 2px solid #eef2ff; margin-bottom: 20px; padding-bottom: 10px; }
+        header h1 { font-family: var(--font-heading); color: var(--primary); font-size: 20px; margin: 0; }
+
+        .exam-layout { display: none; flex-direction: column; gap: 20px; }
+        @media (min-width: 900px) {
+            .exam-layout { flex-direction: row; }
+            .container { margin: 30px auto; padding: 35px; }
+            header h1 { font-size: 26px; }
         }
-        header h1 { color: var(--primary); font-size: 26px; margin: 0; }
 
-        /* Flow Control */
-        #regSuccessArea, #instructionArea, #examArea, #finalSuccessArea { display: none; }
-
-        /* Exam Layout */
-        .exam-layout { display: flex; gap: 40px; }
-        .main-exam-area { flex: 3; }
+        .main-exam-area { flex: 3; width: 100%; }
         .sidebar { 
-            flex: 1; background: var(--primary-light); padding: 25px; 
-            border-radius: 12px; height: fit-content; position: sticky; top: 20px;
+            flex: 1; background: #eef2ff; padding: 20px; border-radius: 12px; 
+            height: fit-content; border: 1px solid #d1d5db;
         }
 
         .timer-strip { 
-            background: #1e293b; color: #fff; padding: 15px; 
-            border-radius: 10px; text-align: center; font-size: 1.3em; 
-            font-weight: bold; margin-bottom: 25px; 
+            background: #1e293b; color: #fff; padding: 12px; border-radius: 8px; 
+            text-align: center; font-family: var(--font-heading); font-weight: bold; margin-bottom: 20px; 
         }
 
-        .question-wrapper { display: none; }
-        .question-wrapper.active { display: block; }
-        .q-meta { color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
-        .q-text { font-size: 19px; line-height: 1.5; color: #0f172a; margin-bottom: 30px; font-weight: 600; }
+        .q-meta { color: var(--primary); font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .q-text { font-size: 17px; line-height: 1.6; font-weight: 600; margin-bottom: 20px; white-space: pre-line; color: #1e293b; }
+
+        input[type="text"], input[type="email"], input[type="tel"] { 
+            width: 100%; padding: 14px; border: 2px solid #cbd5e0; border-radius: 8px; 
+            background-color: var(--input-field-bg); font-size: 16px; box-sizing: border-box; margin-top: 5px;
+        }
 
         .options label { 
-            display: flex; align-items: center; padding: 15px; 
-            border: 2px solid transparent; border-radius: 12px; 
-            margin-bottom: 10px; cursor: pointer; transition: 0.3s; 
-            background: #f1f5f9; font-size: 16px;
+            display: flex; align-items: center; padding: 15px; border-radius: 10px; 
+            margin-bottom: 12px; cursor: pointer; transition: 0.2s; 
+            background: var(--option-bg); border: 1px solid #e2e8f0;
         }
         .options label:hover { background: #e2e8f0; }
-        .options input:checked + span { color: var(--primary); font-weight: 700; }
-        .options input { margin-right: 15px; width: 18px; height: 18px; accent-color: var(--primary); }
+        .options input { margin-right: 12px; transform: scale(1.3); accent-color: var(--primary); }
 
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        /* NEW Grid Appearance - NO WHITE */
+        .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 10px; }
         .grid-item { 
-            padding: 10px 0; border: 1px solid #cbd5e0; border-radius: 8px; 
-            text-align: center; cursor: pointer; font-size: 14px; font-weight: 700; 
-            background: white;
+            padding: 12px 0; border: 1px solid #cbd5e0; border-radius: 8px; 
+            text-align: center; cursor: pointer; font-weight: 700; 
+            background: var(--grid-item-bg); /* Slate background */
+            color: #475569; font-size: 14px; transition: 0.2s;
         }
-        .grid-item.active-idx { background: var(--primary); color: white; }
-        .grid-item.answered { background: var(--success); color: white; }
-
-        .form-group { margin-bottom: 20px; }
-        .form-group label { font-weight: 600; font-size: 14px; color: var(--text-muted); display: block; margin-bottom: 8px; }
-        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] { 
-            width: 100%; padding: 12px; border: 2px solid #e2e8f0; 
-            border-radius: 8px; background: var(--input-bg); box-sizing: border-box;
-        }
-
-        .btn { padding: 15px 25px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .btn-primary { background: var(--primary); color: white; }
-        .btn-success { background: var(--success); color: white; width: 100%; }
-        .nav-controls { display: flex; justify-content: space-between; margin-top: 30px; }
+        .grid-item:hover { background: #cbd5e0; color: #1e293b; }
         
-        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
-        .success-screen { text-align: center; padding: 40px; }
+        .grid-item.active-idx { 
+            background: var(--primary) !important; color: white !important; 
+            border-color: var(--primary); box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3); 
+        }
+        .grid-item.answered { 
+            background: var(--success) !important; color: white !important; 
+            border-color: var(--success); 
+        }
+
+        .btn { padding: 16px; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; font-family: var(--font-heading); }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
+        .btn-submit { background: var(--success); color: white; display: none; width: 100%; }
+
+        .question-wrapper { display: none; }
+        .question-wrapper.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
 <div id="lockOverlay">
-    <h2>SECURITY ALERT: FULLSCREEN REQUIRED</h2>
-    <p>Testing environment must remain in full-screen mode.</p>
-    <button onclick="forceFullscreen()" class="btn btn-primary" style="margin-top: 20px;">Return to Test</button>
+    <h2>ENVIRONMENT LOCKED</h2>
+    <p>Please return to Full-Screen to continue the test.</p>
+    <button onclick="forceFullscreen()" class="btn btn-primary" style="width: auto; padding: 12px 30px;">Resume Exam</button>
 </div>
 
 <div class="container">
     <header><h1>Wipro Elite NTH Digital Assessment</h1></header>
 
     <div id="registrationArea">
-        <h3 style="margin-bottom: 25px;">Candidate Registration</h3>
+        <h3 style="margin-bottom: 20px; font-family: var(--font-heading);">Candidate Registration</h3>
         <form id="regForm">
-            <div class="form-group"><label>FULL NAME</label><input type="text" required id="userName" placeholder="As per Aadhaar"></div>
-            <div class="form-group"><label>EMAIL ID</label><input type="email" required id="userEmail" placeholder="example@college.edu"></div>
-            <div class="form-group"><label>CONTACT NUMBER</label><input type="tel" required pattern="[0-9]{10}" placeholder="10-digit mobile number"></div>
-            <div class="form-group"><label>ACADEMIC BRANCH</label><input type="text" required placeholder="e.g. Computer Science"></div>
-            <div class="form-group"><label>PRELIMINARY SCORE (%)</label><input type="number" required></div>
-            <button type="submit" class="btn btn-primary" style="width:100%">Complete Registration</button>
+            <div style="margin-bottom: 15px;"><label style="font-size: 12px; font-weight: bold; color: #64748b;">FULL NAME</label><input type="text" required id="name" placeholder="John Doe"></div>
+            <div style="margin-bottom: 15px;"><label style="font-size: 12px; font-weight: bold; color: #64748b;">EMAIL ID</label><input type="email" required id="email" placeholder="john@example.com"></div>
+            <div style="margin-bottom: 15px;"><label style="font-size: 12px; font-weight: bold; color: #64748b;">MOBILE</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10 Digit Number"></div>
+            <button type="submit" class="btn btn-primary">Begin Assessment</button>
         </form>
     </div>
 
-    <div id="regSuccessArea" class="success-screen">
-        <div style="font-size: 60px; color: var(--success);">✔</div>
-        <h2 style="color: var(--success);">Registration Completed Successfully!</h2>
-        <p>Your details have been verified. Click below to read the mandatory exam instructions.</p>
-        <button onclick="showInstructions()" class="btn btn-primary">Proceed to Instructions</button>
-    </div>
-
-    <div id="instructionArea">
-        <h3 style="color: var(--danger);">Exam Rules & Instructions</h3>
-        <ul style="line-height: 2; color: var(--text-dark);">
-            <li><b>Duration:</b> 45 Minutes total.</li>
-            <li><b>Navigation:</b> No Back Button. You cannot revisit previous questions.</li>
-            <li><b>Security:</b> Full-screen mode and webcam monitoring are active.</li>
-            <li><b>Malpractice:</b> Tab switching or refreshing will terminate the session.</li>
-            <li><b>Submission:</b> Results are auto-submitted when the timer hits zero.</li>
-        </ul>
-        <button onclick="startExam()" class="btn btn-success" style="margin-top: 20px;">I Understand, Proceed to Assessment</button>
-    </div>
-
-    <div id="examArea">
-        <div class="exam-layout">
-            <div class="main-exam-area">
-                <div id="questionContainer">
-                    </div>
-                <div class="nav-controls">
-                    <div></div> <button id="nextBtn" onclick="nextQuestion()" class="btn btn-primary" style="width: 150px;">Next</button>
-                    <button id="submitBtn" onclick="finishExam()" class="btn btn-success" style="display:none; width: 150px;">Submit Test</button>
+    <div id="examArea" class="exam-layout">
+        <div class="main-exam-area">
+            <div class="timer-strip">Session Time: <span id="timer">45:00</span></div>
+            <form id="assessmentForm">
+                <div id="questionContainer"></div>
+                <div style="margin-top: 30px; display: flex; gap: 15px;">
+                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Save & Next</button>
+                    <button type="submit" id="submitBtn" class="btn btn-submit">Final Submit Assessment</button>
                 </div>
-            </div>
+            </form>
+        </div>
 
-            <div class="sidebar">
-                <div class="timer-strip" id="timer">45:00</div>
-                <div class="grid-title">Question Navigator</div>
-                <div class="question-grid" id="qGrid"></div>
-                <div style="margin-top: 30px; font-size: 13px; color: var(--text-muted);">
-                    <p><span class="status-dot" style="background: var(--success);"></span> Answered</p>
-                    <p><span class="status-dot" style="background: var(--primary);"></span> Current</p>
-                    <p><span class="status-dot" style="background: white; border: 1px solid #cbd5e0;"></span> Not Visited</p>
-                </div>
+        <div class="sidebar">
+            <h4 style="margin: 0 0 15px 0; font-size: 13px; color: #64748b; font-family: var(--font-heading); text-transform: uppercase;">Question Navigator</h4>
+            <div class="question-grid" id="qGrid"></div>
+            <div style="margin-top: 25px; border-top: 1px solid #cbd5e0; padding-top: 15px; font-size: 12px; color: #475569;">
+                <div style="display:flex; align-items:center; margin-bottom:5px;"><span style="width:12px; height:12px; background:var(--success); border-radius:2px; display:inline-block; margin-right:8px;"></span> Answered</div>
+                <div style="display:flex; align-items:center; margin-bottom:5px;"><span style="width:12px; height:12px; background:var(--primary); border-radius:2px; display:inline-block; margin-right:8px;"></span> Current</div>
+                <div style="display:flex; align-items:center;"><span style="width:12px; height:12px; background:var(--grid-item-bg); border-radius:2px; display:inline-block; margin-right:8px;"></span> Not Answered</div>
             </div>
         </div>
     </div>
 
-    <div id="finalSuccessArea" class="success-screen">
-        <div style="font-size: 60px; color: var(--success);">🎉</div>
-        <h2 style="color: var(--success);">Assessment Submitted!</h2>
-        <p>Thank you, <span id="displayUser"></span>. Your responses have been securely recorded.</p>
-        <p style="color: var(--text-muted);">Wipro Recruitment Team will contact you via email.</p>
+    <div id="successArea" style="display: none; text-align: center; padding: 50px;">
+        <h1 style="color: var(--success);">Submission Successful</h1>
+        <p>Your responses have been logged securely. You may now close this window.</p>
     </div>
 </div>
 
 <script>
     const questions = [
-        // 1-7: TOUGH QUANT
+        // 1-7: QUANT
         { q: "A vessel contains 60 liters of milk. 12 liters are taken out and replaced with water. This process is repeated once more. How much milk is left?", o: ["38.4 liters", "40 liters", "36 liters", "42.8 liters"], s: "Quant" },
         { q: "A is thrice as efficient as B and finishes work in 60 days less than B. Find time if they work together.", o: ["22.5 days", "25 days", "30 days", "20 days"], s: "Quant" },
         { q: "Find the units digit in the expansion of 7^105 + 3^58.", o: ["6", "4", "2", "0"], s: "Quant" },
@@ -192,7 +166,7 @@
         { q: "Average weight of 8 men increases by 2.5 kg when a new man replaces one weighing 65 kg. New man's weight?", o: ["85 kg", "75 kg", "80 kg", "90 kg"], s: "Quant" },
         { q: "Two dice are thrown. What is the probability that the sum is a prime number?", o: ["5/12", "7/12", "1/2", "1/3"], s: "Quant" },
 
-        // 8-14: TOUGH PYTHON & JAVA
+        // 8-14: TECHNICAL
         { q: "Python output:\ndef f(a, b=[]):\n  b.append(a)\n  return b\nprint(f(1), f(2))", o: [" [1, 2] [1, 2]", "[1] [2]", "[1] [1, 2]", "Error"], s: "Python" },
         { q: "Which Java concept prevents inheritance while allowing instantiation?", o: ["Final class", "Abstract class", "Private constructor", "Static class"], s: "Java" },
         { q: "True statement about Python's 'Global Interpreter Lock' (GIL):", o: ["Only one thread executes bytecode at once", "Enables multi-core speed", "Only in PyPy", "None"], s: "Python" },
@@ -201,7 +175,7 @@
         { q: "What is 'Method Hiding' in Java?", o: ["Static method shadowing", "Instance overriding", "Encapsulation", "Hiding vars"], s: "Java" },
         { q: "Python 'nonlocal' keyword purpose:", o: ["Modify var in nearest non-global scope", "Declare global", "Create static var", "Private access"], s: "Python" },
 
-        // 15-21: LOGICAL REASONING
+        // 15-21: LOGICAL
         { q: "If MONKEY is coded as XDJMNL, how is TIGER coded?", o: ["QDFHS", "SDFHS", "QDFGR", "RDFSJ"], s: "Logical" },
         { q: "A man walks 5km North, turns Right and walks 3km, then turns Right and walks 5km. How far is he from start?", o: ["3 km", "5 km", "8 km", "0 km"], s: "Logical" },
         { q: "Syllogism: All Pens are Cups. All Cups are Caps.", o: ["All Pens are Caps", "All Caps are Pens", "Some Caps are not Pens", "None"], s: "Logical" },
@@ -210,7 +184,7 @@
         { q: "Find odd one: 121, 144, 169, 186, 225", o: ["186", "144", "169", "225"], s: "Logical" },
         { q: "If A+B means A is son of B, A-B means A is wife of B. What is P+R-Q?", o: ["Q is father of P", "Q is son of P", "Q is uncle of P", "None"], s: "Logical" },
 
-        // 22-28: VERBAL ABILITY
+        // 22-28: VERBAL
         { q: "Synonym of 'PINNACLE':", o: ["Peak", "Base", "Valley", "Middle"], s: "Verbal" },
         { q: "Antonym of 'ARCHAIC':", o: ["Modern", "Ancient", "Old", "Fresh"], s: "Verbal" },
         { q: "Choose correct: 'Neither the teacher nor the students ____ present.'", o: ["were", "was", "is", "has"], s: "Verbal" },
@@ -219,7 +193,7 @@
         { q: "Meaning of 'Burn the midnight oil':", o: ["Work late into night", "Waste energy", "Cook late", "Ignore sleep"], s: "Verbal" },
         { q: "Passive: 'The manager signed the documents.'", o: ["Documents were signed by manager", "Documents signed by manager", "Manager was signed", "None"], s: "Verbal" },
 
-        // 29-35: TECHNICAL/CORE CS
+        // 29-35: CS CORE
         { q: "Which ACID property ensures data remains even after system failure?", o: ["Durability", "Atomicity", "Consistency", "Isolation"], s: "CS" },
         { q: "OS: Excessive swapping of pages is called:", o: ["Thrashing", "Paging", "Segmentation", "Caching"], s: "CS" },
         { q: "IP Address Range for Class C:", o: ["192-223", "128-191", "1-126", "224-239"], s: "CS" },
@@ -229,106 +203,55 @@
         { q: "SQL: Command to remove all rows without removing structure:", o: ["TRUNCATE", "DROP", "DELETE", "REMOVE"], s: "CS" }
     ];
 
-    let currentIdx = 0;
-    let timerInterval;
+    let current = 0;
+    const container = document.getElementById('questionContainer');
+    const gridEl = document.getElementById('qGrid');
 
-    // 1. Registration Submission
+    questions.forEach((item, i) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = `question-wrapper ${i === 0 ? 'active' : ''}`;
+        wrapper.id = `q-wrapper-${i}`;
+        wrapper.innerHTML = `<span class="q-meta">${item.s} Section | Q ${i+1}</span><p class="q-text">${item.q}</p>
+            <div class="options">${item.o.map(opt => `<label><input type="radio" name="q${i}" onchange="markAnswered(${i})"><span>${opt}</span></label>`).join('')}</div>`;
+        container.appendChild(wrapper);
+
+        const btn = document.createElement('div');
+        btn.className = 'grid-item';
+        btn.id = `grid-item-${i}`;
+        btn.innerText = i + 1;
+        btn.onclick = () => jumpTo(i); // GRID CLICK LOGIC
+        gridEl.appendChild(btn);
+    });
+
+    function jumpTo(idx) {
+        document.querySelector('.question-wrapper.active').classList.remove('active');
+        document.getElementById(`q-wrapper-${idx}`).classList.add('active');
+        current = idx;
+        updateUI();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function markAnswered(idx) { 
+        document.getElementById(`grid-item-${idx}`).classList.add('answered'); 
+    }
+
+    function updateUI() {
+        document.querySelectorAll('.grid-item').forEach(el => el.classList.remove('active-idx'));
+        document.getElementById(`grid-item-${current}`).classList.add('active-idx');
+        document.getElementById('nextBtn').style.display = (current === 34) ? 'none' : 'block';
+        document.getElementById('submitBtn').style.display = (current === 34) ? 'block' : 'none';
+    }
+
+    function nextQuestion() { if (current < 34) jumpTo(current + 1); }
+
     document.getElementById('regForm').onsubmit = (e) => {
         e.preventDefault();
-        document.getElementById('displayUser').innerText = document.getElementById('userName').value;
         document.getElementById('registrationArea').style.display = 'none';
-        document.getElementById('regSuccessArea').style.display = 'block';
+        document.getElementById('examArea').style.display = 'flex';
+        forceFullscreen();
+        updateUI();
+        startTimer();
     };
-
-    // 2. Show Instructions
-    function showInstructions() {
-        document.getElementById('regSuccessArea').style.display = 'none';
-        document.getElementById('instructionArea').style.display = 'block';
-    }
-
-    // 3. Start Exam
-    function startExam() {
-        if(confirm("Confirm to start the assessment. Timer starts now.")) {
-            document.getElementById('instructionArea').style.display = 'none';
-            document.getElementById('examArea').style.display = 'block';
-            initQuestions();
-            startTimer(45);
-            forceFullscreen();
-        }
-    }
-
-    function initQuestions() {
-        const container = document.getElementById('questionContainer');
-        const grid = document.getElementById('qGrid');
-        
-        questions.forEach((item, i) => {
-            // Create Question HTML
-            const div = document.createElement('div');
-            div.className = `question-wrapper ${i === 0 ? 'active' : ''}`;
-            div.id = `q-wrap-${i}`;
-            div.innerHTML = `
-                <span class="q-meta">${item.s} | Question ${i + 1} of ${questions.length}</span>
-                <p class="q-text">${item.q}</p>
-                <div class="options">
-                    ${item.o.map(opt => `
-                        <label>
-                            <input type="radio" name="q${i}" value="${opt}" onchange="markAnswered(${i})">
-                            <span>${opt}</span>
-                        </label>
-                    `).join('')}
-                </div>
-            `;
-            container.appendChild(div);
-
-            // Create Grid Item
-            const gItem = document.createElement('div');
-            gItem.className = 'grid-item' + (i === 0 ? ' active-idx' : '');
-            gItem.id = `grid-${i}`;
-            gItem.innerText = i + 1;
-            grid.appendChild(gItem);
-        });
-    }
-
-    function markAnswered(index) {
-        document.getElementById(`grid-${index}`).classList.add('answered');
-    }
-
-    function nextQuestion() {
-        // Check if current question is answered (optional rule)
-        const selected = document.querySelector(`input[name="q${currentIdx}"]:checked`);
-        if(!selected) {
-            alert("Please select an answer to proceed.");
-            return;
-        }
-
-        if (currentIdx < questions.length - 1) {
-            document.getElementById(`q-wrap-${currentIdx}`).classList.remove('active');
-            document.getElementById(`grid-${currentIdx}`).classList.remove('active-idx');
-            
-            currentIdx++;
-            
-            document.getElementById(`q-wrap-${currentIdx}`).classList.add('active');
-            document.getElementById(`grid-${currentIdx}`).classList.add('active-idx');
-            
-            if(currentIdx === questions.length - 1) {
-                document.getElementById('nextBtn').style.display = 'none';
-                document.getElementById('submitBtn').style.display = 'block';
-            }
-        }
-    }
-
-    function startTimer(minutes) {
-        let time = minutes * 60;
-        timerInterval = setInterval(() => {
-            let m = Math.floor(time / 60);
-            let s = time % 60;
-            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (time-- <= 0) {
-                clearInterval(timerInterval);
-                finishExam();
-            }
-        }, 1000);
-    }
 
     function forceFullscreen() {
         const el = document.documentElement;
@@ -336,19 +259,25 @@
         document.getElementById('lockOverlay').style.display = 'none';
     }
 
+    function startTimer() {
+        let sec = 2700;
+        setInterval(() => {
+            let m = Math.floor(sec / 60); let s = sec % 60;
+            document.getElementById('timer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            if (sec-- <= 0) document.getElementById('assessmentForm').submit();
+        }, 1000);
+    }
+
     document.addEventListener('fullscreenchange', () => {
-        if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'block') {
+        if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'flex') 
             document.getElementById('lockOverlay').style.display = 'flex';
-        }
     });
 
-    function finishExam() {
-        clearInterval(timerInterval);
+    document.getElementById('assessmentForm').onsubmit = (e) => {
+        e.preventDefault();
         document.getElementById('examArea').style.display = 'none';
-        document.getElementById('finalSuccessArea').style.display = 'block';
-        if (document.fullscreenElement) document.exitFullscreen();
-    }
+        document.getElementById('successArea').style.display = 'block';
+    };
 </script>
-
 </body>
 </html>
