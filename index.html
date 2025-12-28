@@ -133,22 +133,28 @@
             <div class="form-group"><label>EMAIL ID</label><input type="email" required id="email" placeholder="example@college.edu"></div>
             <div class="form-group"><label>CONTACT NUMBER</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10-digit mobile number"></div>
             <div class="form-group"><label>ACADEMIC BRANCH</label><input type="text" required id="branch" placeholder="e.g. Computer Science"></div>
+            <div class="form-group"><label>Preliminary Score (%)</label><input type="number" required id="preScore"></div>
             <button type="submit" class="btn btn-primary">Proceed to Assessment</button>
         </form>
     </div>
 
-    <div id="instructionArea" style="display: none; max-width: 700px; margin: 0 auto;">
-        <h3 style="color: var(--danger);">Standard Operating Procedure</h3>
-        <ul style="line-height: 2.2; font-size: 16px; color: var(--text-dark);">
-            <li><b>Section A:</b> 7 Quantitative Aptitude Questions</li>
-            <li><b>Section B:</b> 7 Logical Reasoning Questions</li>
-            <li><b>Section C:</b> 7 Verbal Ability (English) Questions</li>
-            <li><b>Section D:</b> 9 Core Technical Questions</li>
-            <li><b>Section E:</b> 5 General Mix Questions</li>
-            <li>Do not refresh or exit the window. Total Time: <b>45 Minutes</b>.</li>
+ <div id="instructionArea">
+        <h3 style="color: var(--danger);">Exam Rules (10 Points)</h3>
+        <ul style="line-height: 1.8;">
+            <li>45 Minutes total duration.</li>
+            <li>35 Questions (Quant, Logical, English, Technical).</li>
+            <li>No Back Button: You cannot revisit previous questions.</li>
+            <li>Full-screen mode is mandatory.</li>
+            <li>Tab switching will be flagged as malpractice.</li>
+            <li>Do not refresh the page.</li>
+            <li>Submit button appears only on the 35th question.</li>
+            <li>Select an answer to enable the 'Next' button.</li>
+            <li>Ensure stable internet connectivity.</li>
+            <li>Result will be processed post-submission.</li>
         </ul>
-        <button onclick="startExam()" class="btn btn-primary">Accept & Start Test</button>
+        <button onclick="startExam()" class="btn btn-primary">Start Exam</button>
     </div>
+
 
     <div id="examArea" class="exam-layout">
         <div class="main-exam-area">
@@ -185,13 +191,41 @@
     const questions = [
         { q: "A sum of money doubles itself in 8 years at simple interest. What is the rate of interest?", o: ["10.5%", "12.5%", "15%", "8%"], s: "Quant" },
         { q: "If x:y = 3:4 and y:z = 8:9, what is x:z?", o: ["1:2", "2:3", "3:2", "4:5"], s: "Quant" },
-        { q: "The HCF of two numbers is 11 and their LCM is 693. If one number is 77, find the other.", o: ["88", "99", "66", "121"], s: "Quant" },
-        { q: "A man buys an article for ₹27.50 and sells it for ₹28.60. Find his gain percent.", o: ["4%", "5%", "6%", "2%"], s: "Quant" },
-        { q: "A can do a piece of work in 10 days, and B in 15 days. How many days will they take together?", o: ["6 days", "8 days", "5 days", "12 days"], s: "Quant" },
-        { q: "Find the average of first 50 natural numbers.", o: ["25.5", "25", "26", "24.5"], s: "Quant" },
-        { q: "A train moves at 54 km/hr. What is its speed in m/sec?", o: ["15 m/s", "20 m/s", "25 m/s", "10 m/s"], s: "Quant" },
-        { q: "In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written?", o: ["EOJDJEFM", "EOJDEJFM", "MFEJDJOE", "EDJDMFEJ"], s: "Logical" },
-        { q: "Which of the following is a leap year?", o: ["1900", "1800", "2000", "2100"], s: "Logical" },
+        { 
+    q: "A vessel contains 60 liters of milk. 12 liters are taken out and replaced with water. This process is repeated once more. How much milk is now left in the vessel?", 
+    o: ["38.4 liters", "40 liters", "36 liters", "42.8 liters"], 
+    s: "Quant" 
+},
+{ 
+    q: "A is thrice as efficient as B and is therefore able to finish a piece of work in 60 days less than B. Find the time in which they can complete the work together.", 
+    o: ["22.5 days", "25 days", "30 days", "20 days"], 
+    s: "Quant" 
+},
+{ 
+    q: "Find the units digit in the expansion of $7^{105} + 3^{58}$.", 
+    o: ["6", "4", "2", "0"], 
+    s: "Quant" 
+},
+{ 
+    q: "Two pipes A and B can fill a tank in 20 and 30 hours respectively. A third pipe C empties the tank at 45 liters/minute. If all three pipes are opened, the tank fills in 15 hours. What is the capacity of the tank?", 
+    o: ["162,000 liters", "150,000 liters", "180,000 liters", "120,000 liters"], 
+    s: "Quant" 
+},
+{ 
+    q: "A sum of money at compound interest amounts to thrice itself in 3 years. In how many years will it be 9 times itself?", 
+    o: ["6 years", "9 years", "12 years", "15 years"], 
+    s: "Quant" 
+},
+{ 
+    q: "In a class, the average weight of 8 men increases by 2.5 kg when a new man replaces one of them weighing 65 kg. What is the weight of the new man?", 
+    o: ["85 kg", "75 kg", "80 kg", "90 kg"], 
+    s: "Quant" 
+},
+{ 
+    q: "Two dice are thrown simultaneously. What is the probability that the sum of the numbers appearing on the dice is a prime number?", 
+    o: ["5/12", "7/12", "1/2", "1/3"], 
+    s: "Quant" 
+},
         { q: "A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D?", o: ["Grandmother", "Grandfather", "Daughter", "Granddaughter"], s: "Logical" },
         { q: "Identify the next number: 10, 14, 26, 42, 70, ?", o: ["114", "100", "112", "120"], s: "Logical" },
         { q: "If '+' means 'x', '-' means '+', 'x' means '/' and '/' means '-', then 6+2-10x5/2 = ?", o: ["12", "15", "18", "10"], s: "Logical" },
@@ -210,13 +244,41 @@
         { q: "In Python, which keyword is used to create a function?", o: ["func", "define", "def", "function"], s: "Technical" },
         { q: "Which data structure follows LIFO?", o: ["Queue", "Linked List", "Stack", "Array"], s: "Technical" },
         { q: "The primary key of a table must be:", o: ["Unique", "Not Null", "Both A & B", "None"], s: "Technical" },
-        { q: "Who is the father of C language?", o: ["Dennis Ritchie", "James Gosling", "Bjarne Stroustrup", "Guido van Rossum"], s: "Technical" },
-        { q: "What is the time complexity of Binary Search?", o: ["O(n)", "O(n log n)", "O(log n)", "O(1)"], s: "Technical" },
-        { q: "Which is a non-volatile memory?", o: ["RAM", "ROM", "Cache", "Register"], s: "Technical" },
-        { q: "Binary equivalent of decimal 10:", o: ["1010", "1100", "1001", "1011"], s: "Mix" },
-        { q: "CPU stands for:", o: ["Central Processing Unit", "Control Process Unit", "Core Power Unit", "None"], s: "Mix" },
-        { q: "Full form of HTML:", o: ["Hypertext Markup Language", "Hyperlink Text Language", "Home Tool Markup", "None"], s: "Mix" },
-        { q: "Shortcut key for Undo:", o: ["Ctrl+U", "Ctrl+Z", "Ctrl+Y", "Ctrl+X"], s: "Mix" },
+        { 
+        q: "In Python, what is the output of: \n def func(a, b=[]): \n   b.append(a) \n   return b \n print(func(1), func(2))", 
+        o: ["[1] [2]", "[1] [1, 2]", "[1, 2] [1, 2]", "Error"], 
+        s: "Python" 
+    },
+    { 
+        q: "Which concept in Java prevents a class from being inherited while still allowing it to be instantiated?", 
+        o: ["Abstract class", "Final class", "Private constructor", "Static class"], 
+        s: "Java" 
+    },
+    { 
+        q: "In Python, which of the following is true about the 'Global Interpreter Lock' (GIL)?", 
+        o: ["It allows multiple threads to run Python bytecode at once", "It prevents multi-threading entirely", "It ensures only one thread executes Python bytecode at a time", "It is only present in Jython"], 
+        s: "Python" 
+    },
+    { 
+        q: "What will happen if a 'finally' block and a 'try' block both contain a 'return' statement in Java?", 
+        o: ["Compile-time error", "Try block return is executed", "Finally block return is executed", "Both return statements are executed"], 
+        s: "Java" 
+    },
+    { 
+        q: "What is the purpose of '__slots__' in a Python class definition?", 
+        o: ["To speed up method calls", "To restrict the creation of instance attributes to save memory", "To allow multiple inheritance", "To define private variables"], 
+        s: "Python" 
+    },
+    { 
+        q: "What is 'Method Hiding' in Java?", 
+        o: ["Overriding an instance method", "Defining a static method in a subclass with the same signature as one in the superclass", "Using the private keyword", "Writing a method with no body"], 
+        s: "Java" 
+    },
+    { 
+        q: "In Python, what does the 'nonlocal' keyword do?", 
+        o: ["Declares a global variable", "Accesses a variable in the nearest enclosing scope that is not global", "Creates a variable that persists across function calls", "None of the above"], 
+        s: "Python" 
+    },
         { q: "1 Gigabyte is equal to:", o: ["1024 MB", "1000 MB", "1024 KB", "100 MB"], s: "Mix" }
     ];
 
