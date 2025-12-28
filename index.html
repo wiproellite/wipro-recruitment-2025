@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wipro Secure Assessment Portal</title>
+    <title>Wipro Secure Assessment Portal | Elite NTH</title>
     <style>
-        /* Import Professional UI Fonts */
+        /* Professional Font Imports */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
         :root { 
@@ -13,563 +13,239 @@
             --success: #28a745; 
             --danger: #dc3545; 
             --bg: #f4f7f9; 
-            /* Font Variables */
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-main: 'Inter', sans-serif;
             --font-heading: 'Poppins', sans-serif;
         }
 
-        body { 
-            font-family: var(--font-main); 
-            background-color: var(--bg); 
-            margin: 0; 
-            user-select: none; 
-            overflow-x: hidden; 
-            -webkit-font-smoothing: antialiased;
-        }
+        body { font-family: var(--font-main); background-color: var(--bg); margin: 0; user-select: none; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        h1, h2, h3, .timer-strip, .grid-title, .btn { font-family: var(--font-heading); }
 
-        h1, h2, h3, .timer-strip { 
-            font-family: var(--font-heading); 
-            letter-spacing: -0.02em;
-        }
+        /* Security Overlays */
+        #lockOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 10000; color: white; text-align: center; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+
+        .container { max-width: 1200px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); min-height: 650px; position: relative; }
         
-        /* Security Overlay */
-        #lockOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; color: white; text-align: center; justify-content: center; align-items: center; flex-direction: column; }
+        header { text-align: center; border-bottom: 2px solid #f0f0f0; margin-bottom: 25px; padding-bottom: 15px; }
+        header h1 { color: #1a202c; font-size: 24px; margin: 0; letter-spacing: -0.5px; }
 
-        .container { max-width: 800px; margin: 30px auto; background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); min-height: 550px; display: flex; flex-direction: column; position: relative; }
-        header { text-align: center; border-bottom: 2px solid #eee; margin-bottom: 25px; padding-bottom: 15px; }
-        header h1 { color: #2c3e50; font-size: 24px; margin: 0; }
+        /* Exam Layout */
+        .exam-layout { display: none; gap: 30px; }
+        .main-exam-area { flex: 3; }
+        .sidebar { flex: 1; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; height: fit-content; position: sticky; top: 20px; }
 
-        .timer-strip { background: #ebf4ff; border: 1px solid #b3d7ff; color: #0056b3; padding: 10px; border-radius: 8px; text-align: center; font-size: 1.2em; font-weight: bold; margin-bottom: 20px; position: sticky; top: 0; z-index: 100; }
+        .timer-strip { background: #ebf4ff; border: 1px solid #b3d7ff; color: #0056b3; padding: 15px; border-radius: 8px; text-align: center; font-size: 1.2em; font-weight: bold; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
 
         .question-wrapper { display: none; }
-        .question-wrapper.active { display: block; animation: slideIn 0.3s ease-out; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        .question-wrapper.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        .q-meta { color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; letter-spacing: 0.05em; }
-        .q-text { font-size: 18px; line-height: 1.6; color: #333; margin-bottom: 25px; font-weight: 500; }
+        .q-meta { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
+        .q-text { font-size: 18px; line-height: 1.6; color: #2d3748; margin-bottom: 25px; font-weight: 500; }
 
-        .options label { display: block; padding: 14px; border: 2px solid #edf2f7; border-radius: 8px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; background: #fdfdfd; font-weight: 400; }
-        .options label:hover { background: #f0f7ff; border-color: var(--primary); }
+        .options label { display: block; padding: 15px; border: 2px solid #edf2f7; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; background: #fff; font-size: 15px; }
+        .options label:hover { background: #f7fafc; border-color: #cbd5e0; }
+        .options input:checked + span { color: var(--primary); font-weight: 600; }
         .options input { margin-right: 12px; transform: scale(1.2); }
 
-        .btn-box { margin-top: auto; padding-top: 30px; }
-        .btn { padding: 16px; border: none; border-radius: 8px; font-size: 17px; font-weight: 600; cursor: pointer; width: 100%; transition: 0.3s; font-family: var(--font-heading); }
-        .btn-primary { background: var(--primary); color: white; }
+        /* Grid Palette */
+        .grid-title { font-size: 14px; margin-bottom: 15px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+        .grid-item { padding: 12px 0; border: 1px solid #e2e8f0; border-radius: 6px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; background: white; transition: 0.2s; color: #4a5568; }
+        .grid-item.active-idx { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05); }
+        .grid-item.answered { background: var(--success); color: white; border-color: var(--success); }
+
+        .btn-box { margin-top: 40px; display: flex; gap: 15px; }
+        .btn { padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
+        .btn-primary { background: var(--primary); color: white; flex: 1; }
         .btn-primary:hover { background: #0056b3; }
-        .btn-submit { background: var(--success); color: white; display: none; }
+        .btn-submit { background: var(--success); color: white; flex: 1; display: none; }
 
-        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 6px; margin-top: 5px; font-size: 16px; box-sizing: border-box; font-family: var(--font-main); }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { font-weight: 600; color: #4a5568; font-size: 14px; }
+        /* Registration Form */
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] { width: 100%; padding: 14px; border: 1px solid #cbd5e0; border-radius: 8px; margin-top: 6px; font-size: 15px; box-sizing: border-box; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { font-weight: 600; font-size: 13px; color: #4a5568; }
 
-        #registrationArea, #instructionArea, #examArea, #successArea { display: none; }
-        
+        #registrationArea, #instructionArea, #successArea { max-width: 600px; margin: 40px auto; }
         .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        code { background: #f1f1f1; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', Courier, monospace; }
+        
+        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; color: #e53e3e; }
     </style>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 </head>
 <body oncontextmenu="return false;">
 
 <div id="lockOverlay">
-    <h2>SECURE EXAM INTERFACE</h2>
-    <p>The system detected a window change. Please re-enter full-screen to continue.</p>
-    <button onclick="forceFullscreen()" class="btn btn-primary" style="width: 200px;">Resume Exam</button>
+    <h2>SECURE EXAM MODE ACTIVE</h2>
+    <p>The interface was minimized or a tab was switched. This incident has been logged.</p>
+    <button onclick="forceFullscreen()" class="btn btn-primary" style="max-width: 250px;">Return to Exam</button>
 </div>
 
 <div class="container">
-    <header><h1>Wipro Elite NTH Assessment</h1></header>
+    <header><h1>Wipro Elite NTH Secure Assessment Portal</h1></header>
 
-        <div id="registrationArea" style="display: block;">
-        <h3>Candidate Registration</h3>
+    <div id="registrationArea">
+        <h3 style="margin-bottom: 20px;">Candidate Registration</h3>
         <form id="regForm">
-            <div class="form-group"><label>Full Name</label><input type="text" required id="name"></div>
-            <div class="form-group"><label>Email ID</label><input type="email" required id="email"></div>
-            <div class="form-group"><label>Mobile Number</label><input type="tel" required pattern="[0-9]{10}" id="mobile"></div>
-            <div class="form-group"><label>Branch</label><input type="text" required id="branch"></div>
-            <div class="form-group"><label>Preliminary Score (%)</label><input type="number" required id="preScore"></div>
-            <button type="submit" class="btn btn-primary">Proceed</button>
+            <div class="form-group"><label>Full Name</label><input type="text" required id="name" placeholder="Enter your full name"></div>
+            <div class="form-group"><label>Email ID</label><input type="email" required id="email" placeholder="official@example.com"></div>
+            <div class="form-group"><label>Mobile Number</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10-digit mobile number"></div>
+            <div class="form-group"><label>University/Branch</label><input type="text" required id="branch" placeholder="e.g. B.Tech CSE"></div>
+            <div class="form-group"><label>Current Aggregate (%)</label><input type="number" required id="preScore" placeholder="e.g. 75"></div>
+            <button type="submit" class="btn btn-primary">Proceed to Instructions</button>
         </form>
     </div>
 
-    <div id="instructionArea">
-        <h3 style="color: var(--danger);">Exam Rules (10 Points)</h3>
-        <ul style="line-height: 1.8;">
-            <li>45 Minutes total duration.</li>
-            <li>35 Questions (Quant, Logical, English, Technical).</li>
-            <li>No Back Button: You cannot revisit previous questions.</li>
-            <li>Full-screen mode is mandatory.</li>
-            <li>Tab switching will be flagged as malpractice.</li>
-            <li>Do not refresh the page.</li>
-            <li>Submit button appears only on the 35th question.</li>
-            <li>Select an answer to enable the 'Next' button.</li>
-            <li>Ensure stable internet connectivity.</li>
-            <li>Result will be processed post-submission.</li>
+    <div id="instructionArea" style="display: none;">
+        <h3 style="color: var(--danger);">Critical Instructions</h3>
+        <ul style="line-height: 2; font-size: 15px; color: #4a5568;">
+            <li><b>Total Duration:</b> 45 Minutes for 35 Questions.</li>
+            <li><b>Navigation:</b> Use the 'Question Palette' on the right to jump between questions.</li>
+            <li><b>Auto-Submit:</b> The test will auto-submit when the timer hits zero.</li>
+            <li><b>Proctoring:</b> Any attempt to switch tabs or minimize the window will be flagged.</li>
+            <li><b>Requirement:</b> Ensure a stable internet connection and webcam access.</li>
         </ul>
-        <button onclick="startExam()" class="btn btn-primary">Start Exam</button>
+        <button onclick="startExam()" class="btn btn-primary">I Agree, Start Exam</button>
     </div>
 
+    <div id="examArea" class="exam-layout">
+        <div class="main-exam-area">
+            <div class="timer-strip">Session Ends In: <span id="timer">45:00</span></div>
+            <form id="assessmentForm">
+                <div id="questionContainer">
+                    </div>
 
-    <div id="examArea">
-        <div class="timer-strip">Time Remaining: <span id="timer">45:00</span></div>
-        <form id="assessmentForm">
-            
-            <div class="question-wrapper active">
-                <span class="q-meta">Quant | Question 1</span>
-                <p class="q-text">1. A number is divided by 7 leaves remainder 3. When divided by 21 it leaves remainder:</p>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="A"> A) 1</label>
-                    <label><input type="radio" name="q1" value="B"> B) 2</label>
-                    <label><input type="radio" name="q1" value="C"> C) 3</label>
-                    <label><input type="radio" name="q1" value="D"> D) Cannot be determined</label>
+                <div class="btn-box">
+                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next Question</button>
+                    <button type="submit" id="submitBtn" class="btn btn-submit">Submit Final Assessment</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="sidebar">
+            <div class="grid-title">Question Palette</div>
+            <div class="question-grid" id="qGrid"></div>
+            <div style="margin-top: 25px; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <div style="width: 12px; height: 12px; background: var(--success); border-radius: 2px; margin-right: 8px;"></div> Answered
+                </div>
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <div style="width: 12px; height: 12px; background: var(--primary); border-radius: 2px; margin-right: 8px;"></div> Current
+                </div>
+                <div style="display: flex; align-items: center;">
+                    <div style="width: 12px; height: 12px; background: #fff; border: 1px solid #cbd5e0; border-radius: 2px; margin-right: 8px;"></div> Not Visited
                 </div>
             </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Quant | Question 2</span>
-                <p class="q-text">2. If 2<sup>x</sup> × 4<sup>y</sup> = 512, and x + y = 6, find x:</p>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="A"> A) 1</label>
-                    <label><input type="radio" name="q2" value="B"> B) 2</label>
-                    <label><input type="radio" name="q2" value="C"> C) 3</label>
-                    <label><input type="radio" name="q2" value="D"> D) 4</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Quant | Question 3</span>
-                <p class="q-text">3. If 4 men and 6 women can complete a work in 8 days, and 2 men and 3 women can complete in 20 days, then 1 woman alone can complete the work in:</p>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="A"> A) 64 days</label>
-                    <label><input type="radio" name="q3" value="B"> B) 80 days</label>
-                    <label><input type="radio" name="q3" value="C"> C) 96 days</label>
-                    <label><input type="radio" name="q3" value="D"> D) 120 days</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Quant | Question 4</span>
-                <p class="q-text">4. If the sum of n natural numbers is 465, find n:</p>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="A"> A) 29</label>
-                    <label><input type="radio" name="q4" value="B"> B) 30</label>
-                    <label><input type="radio" name="q4" value="C"> C) 31</label>
-                    <label><input type="radio" name="q4" value="D"> D) 32</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Quant | Question 5</span>
-                <p class="q-text">5. The difference between simple and compound interest on ₹20,000 for 2 years at 10% is:</p>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="A"> A) ₹200</label>
-                    <label><input type="radio" name="q5" value="B"> B) ₹210</label>
-                    <label><input type="radio" name="q5" value="C"> C) ₹220</label>
-                    <label><input type="radio" name="q5" value="D"> D) ₹240</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Quant | Question 6</span>
-                <p class="q-text">6. If log(2x) + log(5x) = 2, then x =</p>
-                <div class="options">
-                    <label><input type="radio" name="q6" value="A"> A) 0.1</label>
-                    <label><input type="radio" name="q6" value="B"> B) 0.2</label>
-                    <label><input type="radio" name="q6" value="C"> C) 1</label>
-                    <label><input type="radio" name="q6" value="D"> D) 2</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Quant | Question 7</span>
-                <p class="q-text">7. Solve: 1/(x+1) + 1/(x-1) = 1/2</p>
-                <div class="options">
-                    <label><input type="radio" name="q7" value="A"> A) 1</label>
-                    <label><input type="radio" name="q7" value="B"> B) 2</label>
-                    <label><input type="radio" name="q7" value="C"> C) 3</label>
-                    <label><input type="radio" name="q7" value="D"> D) 4</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 8</span>
-                <p class="q-text">8. Series: 3, 9, 21, 45, 93, ___</p>
-                <div class="options">
-                    <label><input type="radio" name="q8" value="A"> A) 189</label>
-                    <label><input type="radio" name="q8" value="B"> B) 183</label>
-                    <label><input type="radio" name="q8" value="C"> C) 187</label>
-                    <label><input type="radio" name="q8" value="D"> D) 197</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 9</span>
-                <p class="q-text">9. Code: If FLOWER = GQPXGT, then FUTURE = ?</p>
-                <div class="options">
-                    <label><input type="radio" name="q9" value="A"> A) GVVXTF</label>
-                    <label><input type="radio" name="q9" value="B"> B) GVWVTF</label>
-                    <label><input type="radio" name="q9" value="C"> C) GVVWTF</label>
-                    <label><input type="radio" name="q9" value="D"> D) HVWXTF</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 10</span>
-                <p class="q-text">10. Pointing to a photo, Rahul said, “He is the father of my daughter’s brother.” Photo is of:</p>
-                <div class="options">
-                    <label><input type="radio" name="q10" value="A"> A) Rahul</label>
-                    <label><input type="radio" name="q10" value="B"> B) Rahul’s father</label>
-                    <label><input type="radio" name="q10" value="C"> C) Rahul’s son</label>
-                    <label><input type="radio" name="q10" value="D"> D) Rahul’s brother</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 11</span>
-                <p class="q-text">11. A is the sister of B, C is the father of B, D is the husband of A. Which relation holds?</p>
-                <div class="options">
-                    <label><input type="radio" name="q11" value="A"> A) C is father-in-law of D</label>
-                    <label><input type="radio" name="q11" value="B"> B) C is brother of D</label>
-                    <label><input type="radio" name="q11" value="C"> C) D is brother-in-law of C</label>
-                    <label><input type="radio" name="q11" value="D"> D) D is son of C</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 12</span>
-                <p class="q-text">12. Fill the missing term: 7, 10, 16, 28, 52, ___</p>
-                <div class="options">
-                    <label><input type="radio" name="q12" value="A"> A) 80</label>
-                    <label><input type="radio" name="q12" value="B"> B) 86</label>
-                    <label><input type="radio" name="q12" value="C"> C) 100</label>
-                    <label><input type="radio" name="q12" value="D"> D) 94</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 13</span>
-                <p class="q-text">13. Statement: All pens are books. All books are papers. Conclusion:</p>
-                <div class="options">
-                    <label><input type="radio" name="q13" value="A"> A) All pens are papers</label>
-                    <label><input type="radio" name="q13" value="B"> B) Some pens are papers</label>
-                    <label><input type="radio" name="q13" value="C"> C) All papers are pens</label>
-                    <label><input type="radio" name="q13" value="D"> D) Some books are pens</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Logical | Question 14</span>
-                <p class="q-text">14. Choose the odd set of numbers:</p>
-                <div class="options">
-                    <label><input type="radio" name="q14" value="A"> A) 2, 4, 6, 8</label>
-                    <label><input type="radio" name="q14" value="B"> B) 3, 5, 7, 9</label>
-                    <label><input type="radio" name="q14" value="C"> C) 11, 13, 15, 17</label>
-                    <label><input type="radio" name="q14" value="D"> D) 10, 12, 14, 16</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">English | Question 15</span>
-                <p class="q-text">15. Correct sentence:</p>
-                <div class="options">
-                    <label><input type="radio" name="q15" value="A"> A) Neither John nor his friends was present</label>
-                    <label><input type="radio" name="q15" value="B"> B) Neither John nor his friends were present</label>
-                    <label><input type="radio" name="q15" value="C"> C) Neither John nor his friends are present</label>
-                    <label><input type="radio" name="q15" value="D"> D) Neither John nor his friends have present</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">English | Question 16</span>
-                <p class="q-text">16. Choose synonym of AUSPICIOUS:</p>
-                <div class="options">
-                    <label><input type="radio" name="q16" value="A"> A) Unfavorable</label>
-                    <label><input type="radio" name="q16" value="B"> B) Threatening</label>
-                    <label><input type="radio" name="q16" value="C"> C) Lucky</label>
-                    <label><input type="radio" name="q16" value="D"> D) Rare</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">English | Question 17</span>
-                <p class="q-text">17. Identify error: “Each of the participants have submitted their forms.”</p>
-                <div class="options">
-                    <label><input type="radio" name="q17" value="A"> A) Each of</label>
-                    <label><input type="radio" name="q17" value="B"> B) participants</label>
-                    <label><input type="radio" name="q17" value="C"> C) have submitted</label>
-                    <label><input type="radio" name="q17" value="D"> D) their forms</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">English | Question 18</span>
-                <p class="q-text">18. Antonym of Lucid:</p>
-                <div class="options">
-                    <label><input type="radio" name="q18" value="A"> A) Clear</label>
-                    <label><input type="radio" name="q18" value="B"> B) Rational</label>
-                    <label><input type="radio" name="q18" value="C"> C) Confusing</label>
-                    <label><input type="radio" name="q18" value="D"> D) Bright</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">English | Question 19</span>
-                <p class="q-text">19. Meaning of idiom: “To take with a grain of salt”</p>
-                <div class="options">
-                    <label><input type="radio" name="q19" value="A"> A) To believe completely</label>
-                    <label><input type="radio" name="q19" value="B"> B) To disbelieve slightly</label>
-                    <label><input type="radio" name="q19" value="C"> C) To exaggerate</label>
-                    <label><input type="radio" name="q19" value="D"> D) To ignore</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">English | Question 20</span>
-                <p class="q-text">20. Which sentence is in passive voice?</p>
-                <div class="options">
-                    <label><input type="radio" name="q20" value="A"> A) He is writing a letter</label>
-                    <label><input type="radio" name="q20" value="B"> B) A letter is written by him</label>
-                    <label><input type="radio" name="q20" value="C"> C) He will write a letter</label>
-                    <label><input type="radio" name="q20" value="D"> D) He had written a letter</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Technical | Question 21</span>
-                <p class="q-text">21. Worst-case time complexity of QuickSort:</p>
-                <div class="options">
-                    <label><input type="radio" name="q21" value="A"> A) O(n)</label>
-                    <label><input type="radio" name="q21" value="B"> B) O(n log n)</label>
-                    <label><input type="radio" name="q21" value="C"> C) O(n<sup>2</sup>)</label>
-                    <label><input type="radio" name="q21" value="D"> D) O(log n)</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Technical | Question 22</span>
-                <p class="q-text">22. Which of the following is not a feature of OOP?</p>
-                <div class="options">
-                    <label><input type="radio" name="q22" value="A"> A) Encapsulation</label>
-                    <label><input type="radio" name="q22" value="B"> B) Polymorphism</label>
-                    <label><input type="radio" name="q22" value="C"> C) Recursion</label>
-                    <label><input type="radio" name="q22" value="D"> D) Inheritance</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Technical | Question 23</span>
-                <p class="q-text">23. Which data structure is used for BFS (Breadth First Search)?</p>
-                <div class="options">
-                    <label><input type="radio" name="q23" value="A"> A) Stack</label>
-                    <label><input type="radio" name="q23" value="B"> B) Queue</label>
-                    <label><input type="radio" name="q23" value="C"> C) Tree</label>
-                    <label><input type="radio" name="q23" value="D"> D) Heap</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Technical | Question 24</span>
-                <p class="q-text">24. Which index structure is used in relational DBs?</p>
-                <div class="options">
-                    <label><input type="radio" name="q24" value="A"> A) AVL Tree</label>
-                    <label><input type="radio" name="q24" value="B"> B) B+ Tree</label>
-                    <label><input type="radio" name="q24" value="C"> C) Hash Tree</label>
-                    <label><input type="radio" name="q24" value="D"> D) Red-Black Tree</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Technical | Question 25</span>
-                <p class="q-text">25. Output of: <code>int a=5; printf("%d %d", a++, ++a);</code></p>
-                <div class="options">
-                    <label><input type="radio" name="q25" value="A"> A) 5 6</label>
-                    <label><input type="radio" name="q25" value="B"> B) 6 7</label>
-                    <label><input type="radio" name="q25" value="C"> C) Undefined behavior</label>
-                    <label><input type="radio" name="q25" value="D"> D) 6 6</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 26</span>
-                <p class="q-text">26. What is the output of the Python code: <code>print(2**3**2)</code>?</p>
-                <div class="options">
-                    <label><input type="radio" name="q26" value="A"> A) 64</label>
-                    <label><input type="radio" name="q26" value="B"> B) 512</label>
-                    <label><input type="radio" name="q26" value="C"> C) 729</label>
-                    <label><input type="radio" name="q26" value="D"> D) 36</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 27</span>
-                <p class="q-text">27. Which of the following is a non-linear data structure?</p>
-                <div class="options">
-                    <label><input type="radio" name="q27" value="A"> A) Array</label>
-                    <label><input type="radio" name="q27" value="B"> B) Linked List</label>
-                    <label><input type="radio" name="q27" value="C"> C) Queue</label>
-                    <label><input type="radio" name="q27" value="D"> D) Tree</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 28</span>
-                <p class="q-text">28. If cost price of 20 articles = selling price of 16 articles, profit % is:</p>
-                <div class="options">
-                    <label><input type="radio" name="q28" value="A"> A) 20%</label>
-                    <label><input type="radio" name="q28" value="B"> B) 25%</label>
-                    <label><input type="radio" name="q28" value="C"> C) 30%</label>
-                    <label><input type="radio" name="q28" value="D"> D) 33.33%</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 29</span>
-                <p class="q-text">29. What is the difference between a process and a thread?</p>
-                <div class="options">
-                    <label><input type="radio" name="q29" value="A"> A) Threads share memory, processes don't</label>
-                    <label><input type="radio" name="q29" value="B"> B) Threads are lightweight</label>
-                    <label><input type="radio" name="q29" value="C"> C) Threads are within a process</label>
-                    <label><input type="radio" name="q29" value="D"> D) All of the above</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 30</span>
-                <p class="q-text">30. Synonym of 'Ephemeral':</p>
-                <div class="options">
-                    <label><input type="radio" name="q30" value="A"> A) Permanent</label>
-                    <label><input type="radio" name="q30" value="B"> B) Short-lived</label>
-                    <label><input type="radio" name="q30" value="C"> C) Heavenly</label>
-                    <label><input type="radio" name="q30" value="D"> D) Eternal</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 31</span>
-                <p class="q-text">31. Next term in series: 1, 8, 27, 64, ___</p>
-                <div class="options">
-                    <label><input type="radio" name="q31" value="A"> A) 100</label>
-                    <label><input type="radio" name="q31" value="B"> B) 125</label>
-                    <label><input type="radio" name="q31" value="C"> C) 81</label>
-                    <label><input type="radio" name="q31" value="D"> D) 128</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 32</span>
-                <p class="q-text">32. Converting an object into a stream of bytes is called:</p>
-                <div class="options">
-                    <label><input type="radio" name="q32" value="A"> A) Marshaling</label>
-                    <label><input type="radio" name="q32" value="B"> B) Serialization</label>
-                    <label><input type="radio" name="q32" value="C"> C) Deserialization</label>
-                    <label><input type="radio" name="q32" value="D"> D) Encapsulation</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 33</span>
-                <p class="q-text">33. Max nodes in a binary tree of height 'h' (root is 0) is:</p>
-                <div class="options">
-                    <label><input type="radio" name="q33" value="A"> A) 2<sup>(h+1)</sup> - 1</label>
-                    <label><input type="radio" name="q33" value="B"> B) 2<sup>h</sup></label>
-                    <label><input type="radio" name="q33" value="C"> C) 2<sup>(h-1)</sup></label>
-                    <label><input type="radio" name="q33" value="D"> D) 2h + 1</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 34</span>
-                <p class="q-text">34. What is 'Normalization' in a DBMS?</p>
-                <div class="options">
-                    <label><input type="radio" name="q34" value="A"> A) Reducing data redundancy</label>
-                    <label><input type="radio" name="q34" value="B"> B) Protecting integrity</label>
-                    <label><input type="radio" name="q34" value="C"> C) Speeding up query</label>
-                    <label><input type="radio" name="q34" value="D"> D) Both A and B</label>
-                </div>
-            </div>
-
-            <div class="question-wrapper">
-                <span class="q-meta">Mix | Question 35</span>
-                <p class="q-text">35. Complete the idiom: 'A penny for your ___'</p>
-                <div class="options">
-                    <label><input type="radio" name="q35" value="A"> A) Time</label>
-                    <label><input type="radio" name="q35" value="B"> B) Thoughts</label>
-                    <label><input type="radio" name="q35" value="C"> C) Trouble</label>
-                    <label><input type="radio" name="q35" value="D"> D) Effort</label>
-                </div>
-            </div>
-
-            <div class="btn-box">
-                <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next Question</button>
-                <button type="submit" id="submitBtn" class="btn btn-submit">Final Submit Assessment</button>
-            </div>
-        </form>
+        </div>
     </div>
 
-    <div id="successArea">
-        <div style="text-align: center; padding: 40px 0;">
-            <h1 style="color: var(--success);">Submission Successful!</h1>
-            <p style="font-size: 1.2em; color: #4a5568;">Your responses have been recorded and encrypted.</p>
+    <div id="successArea" style="display: none;">
+        <div style="text-align: center; padding: 50px 0;">
+            <div style="font-size: 60px; color: var(--success); margin-bottom: 20px;">✓</div>
+            <h1 style="color: var(--success);">Assessment Submitted</h1>
+            <p style="color: #718096; font-size: 18px;">Your response has been successfully logged. Results will be communicated via your registered email.</p>
             <div class="loader"></div>
-            <p id="closeMsg" style="color: #718096;">Closing secure session automatically...</p>
+            <p style="color: #a0aec0;">Finalizing proctoring logs...</p>
         </div>
     </div>
 </div>
 
 <script>
-    // --- 1. URL MASKING (Professional Link) ---
-    (function() {
-        const fakeToken = "auth=" + btoa(Date.now()).substring(0, 15) + 
-                          "&session_id=WPR_NTH_" + Math.random().toString(36).substring(2, 10).toUpperCase() + 
-                          "&secure_mode=proctored_v4_active";
-        const fakePath = "/assessment/v2/secure-gateway/exam-engine?";
-        window.history.replaceState({}, '', fakePath + fakeToken);
-    })();
+    const questions = [
+        { q: "A number divided by 7 leaves remainder 3. When divided by 21, what is the possible remainder?", o: ["1", "2", "3", "Cannot be determined"], s: "Quant" },
+        { q: "If 2^x * 4^y = 512 and x + y = 6, find the value of x.", o: ["2", "3", "4", "5"], s: "Quant" },
+        { q: "4 men and 6 women can complete a work in 8 days. 2 men and 3 women can do it in how many days?", o: ["16", "20", "24", "32"], s: "Quant" },
+        { q: "If the sum of 'n' natural numbers is 465, find n.", o: ["29", "30", "31", "32"], s: "Quant" },
+        { q: "Difference between SI and CI on ₹20,000 for 2 years at 10% per annum is?", o: ["₹200", "₹210", "₹220", "₹250"], s: "Quant" },
+        { q: "Solve for x: log(2x) + log(5x) = 2", o: ["0.1", "1", "sqrt(10)", "10"], s: "Quant" },
+        { q: "A train 150m long passes a pole in 15 seconds. In what time will it pass a platform 300m long?", o: ["30s", "45s", "50s", "60s"], s: "Quant" },
+        { q: "Complete the series: 3, 9, 21, 45, 93, ?", o: ["189", "183", "196", "190"], s: "Logical" },
+        { q: "If FLOWER is coded as GQPXGT, how is FUTURE coded?", o: ["GVVXTF", "GVVWTF", "HVWXTF", "GVWVTF"], s: "Logical" },
+        { q: "Pointing to a man, Rahul said, 'He is the father of my daughter's brother.' Who is the man?", o: ["Rahul's Father", "Rahul's Son", "Rahul himself", "Rahul's Brother"], s: "Logical" },
+        { q: "A is the sister of B, C is the father of B, D is the husband of A. How is C related to D?", o: ["Father", "Father-in-law", "Brother", "Uncle"], s: "Logical" },
+        { q: "Missing term: 7, 10, 16, 28, 52, ?", o: ["88", "94", "100", "104"], s: "Logical" },
+        { q: "Statement: All pens are books. All books are papers. Conclusion: ?", o: ["All pens are papers", "Some papers are pens", "All papers are pens", "Both A & B"], s: "Logical" },
+        { q: "Find the odd one out: 27, 64, 125, 144, 216", o: ["64", "125", "144", "216"], s: "Logical" },
+        { q: "Choose the correct sentence:", o: ["Neither of them were present", "Neither of them was present", "Neither of them are present", "None"], s: "English" },
+        { q: "Synonym of AUSPICIOUS:", o: ["Favorable", "Unlucky", "Rare", "Harmful"], s: "English" },
+        { q: "Identify error: 'Each of the participants have submitted their forms.'", o: ["Each of", "participants", "have submitted", "their forms"], s: "English" },
+        { q: "Antonym of LUCID:", o: ["Clear", "Bright", "Confusing", "Orderly"], s: "English" },
+        { q: "Meaning of idiom: 'To take with a grain of salt'", o: ["To accept completely", "To be skeptical", "To add flavor", "To ignore"], s: "English" },
+        { q: "Passive voice of: 'He is writing a letter'", o: ["A letter was written by him", "A letter is being written by him", "A letter is written by him", "None"], s: "English" },
+        { q: "Fill in the blank: If I ____ a bird, I would fly.", o: ["am", "was", "were", "had been"], s: "English" },
+        { q: "Worst-case time complexity of QuickSort:", o: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"], s: "Technical" },
+        { q: "Which is not a feature of OOPs?", o: ["Encapsulation", "Polymorphism", "Recursion", "Inheritance"], s: "Technical" },
+        { q: "Data structure used for BFS (Breadth First Search):", o: ["Stack", "Queue", "Linked List", "Tree"], s: "Technical" },
+        { q: "Which index structure is used in relational databases?", o: ["AVL Tree", "B+ Tree", "Hash Tree", "Red-Black Tree"], s: "Technical" },
+        { q: "Output of: int a=5; printf('%d %d', a++, ++a);", o: ["5 6", "6 7", "Undefined", "5 7"], s: "Technical" },
+        { q: "Output of Python code: print(2**3**2)?", o: ["64", "512", "729", "None"], s: "Technical" },
+        { q: "Non-linear data structure:", o: ["Array", "Linked List", "Queue", "Tree"], s: "Technical" },
+        { q: "Converting an object into a stream of bytes is:", o: ["Serialization", "Deserialization", "Marshaling", "Inheritance"], s: "Technical" },
+        { q: "Normalization in DBMS is used for:", o: ["Speeding up queries", "Reducing data redundancy", "Data encryption", "Backup"], s: "Technical" },
+        { q: "Next term in series: 1, 8, 27, 64, ?", o: ["100", "121", "125", "216"], s: "Mix" },
+        { q: "What is a 'Thread' in an OS?", o: ["A separate process", "Lightweight process", "A physical cable", "None"], s: "Mix" },
+        { q: "Max nodes in a binary tree of height 'h' (root=0):", o: ["2^h", "2^(h+1) - 1", "2h", "h^2"], s: "Mix" },
+        { q: "Complete the idiom: 'A penny for your ____'", o: ["Time", "Trouble", "Thoughts", "Effort"], s: "Mix" },
+        { q: "SQL command to delete all records but keep structure:", o: ["DELETE", "TRUNCATE", "DROP", "REMOVE"], s: "Mix" }
+    ];
 
     let current = 0;
-    const items = document.querySelectorAll('.question-wrapper');
+    const container = document.getElementById('questionContainer');
+    const gridEl = document.getElementById('qGrid');
 
-    // --- 2. NAVIGATION LOGIC ---
-    function nextQuestion() {
-        const checked = items[current].querySelector('input:checked');
-        if (!checked) { 
-            // Visual indicator instead of alert
-            items[current].style.border = "2px solid #feb2b2";
-            setTimeout(() => items[current].style.border = "none", 800);
-            return; 
-        }
+    // Initialize Grid & Questions
+    questions.forEach((item, i) => {
+        // Create Question HTML
+        const wrapper = document.createElement('div');
+        wrapper.className = `question-wrapper ${i === 0 ? 'active' : ''}`;
+        wrapper.id = `q-wrapper-${i}`;
+        wrapper.innerHTML = `
+            <span class="q-meta">${item.s} | Question ${i + 1}</span>
+            <p class="q-text">${item.q}</p>
+            <div class="options">
+                ${item.o.map((opt, idx) => `
+                    <label>
+                        <input type="radio" name="q${i}" value="${opt}" onchange="markAnswered(${i})">
+                        <span>${opt}</span>
+                    </label>
+                `).join('')}
+            </div>
+        `;
+        container.appendChild(wrapper);
 
-        if (current < items.length - 1) {
-            items[current].classList.remove('active');
-            current++;
-            items[current].classList.add('active');
-            
-            if (window.MathJax) MathJax.typeset(); // Refresh Math equations
-
-            if (current === items.length - 1) {
-                document.getElementById('nextBtn').style.display = 'none';
-                document.getElementById('submitBtn').style.display = 'block';
-            }
-        }
-    }
-
-    // --- 3. FULLSCREEN & SECURITY ---
-    function forceFullscreen() {
-        const el = document.documentElement;
-        if (el.requestFullscreen) el.requestFullscreen();
-        else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
-        document.getElementById('lockOverlay').style.display = 'none';
-    }
-
-    document.addEventListener('fullscreenchange', () => {
-        if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'block') {
-            document.getElementById('lockOverlay').style.display = 'flex';
-        }
+        // Create Grid Button
+        const btn = document.createElement('div');
+        btn.className = 'grid-item';
+        btn.id = `grid-item-${i}`;
+        btn.innerText = i + 1;
+        btn.onclick = () => jumpTo(i);
+        gridEl.appendChild(btn);
     });
 
-    // --- 4. WORKFLOW TRANSITIONS ---
+    function jumpTo(index) {
+        document.querySelector('.question-wrapper.active').classList.remove('active');
+        document.getElementById(`q-wrapper-${index}`).classList.add('active');
+        current = index;
+        updateUI();
+    }
+
+    function markAnswered(index) {
+        document.getElementById(`grid-item-${index}`).classList.add('answered');
+    }
+
+    function updateUI() {
+        document.querySelectorAll('.grid-item').forEach(el => el.classList.remove('active-idx'));
+        document.getElementById(`grid-item-${current}`).classList.add('active-idx');
+        
+        const isLast = current === questions.length - 1;
+        document.getElementById('nextBtn').style.display = isLast ? 'none' : 'block';
+        document.getElementById('submitBtn').style.display = isLast ? 'block' : 'none';
+    }
+
+    function nextQuestion() {
+        if (current < questions.length - 1) jumpTo(current + 1);
+    }
+
+    // Workflow
     document.getElementById('regForm').onsubmit = (e) => {
         e.preventDefault();
         document.getElementById('registrationArea').style.display = 'none';
@@ -579,52 +255,45 @@
     function startExam() {
         forceFullscreen();
         document.getElementById('instructionArea').style.display = 'none';
-        document.getElementById('examArea').style.display = 'block';
+        document.getElementById('examArea').style.display = 'flex';
+        updateUI();
         startTimer();
+    }
+
+    function forceFullscreen() {
+        const el = document.documentElement;
+        if (el.requestFullscreen) el.requestFullscreen();
+        document.getElementById('lockOverlay').style.display = 'none';
     }
 
     function startTimer() {
         let sec = 45 * 60;
         const timerEl = document.getElementById('timer');
         const clock = setInterval(() => {
-            let m = Math.floor(sec / 60);
-            let s = sec % 60;
-            timerEl.textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
-            if (--sec < 0) {
-                clearInterval(clock);
-                processFinalSubmit();
+            let mins = Math.floor(sec / 60);
+            let displaySec = sec % 60;
+            timerEl.innerText = `${mins}:${displaySec < 10 ? '0' : ''}${displaySec}`;
+            if (sec-- <= 0) { 
+                clearInterval(clock); 
+                alert("Time Expired. Auto-submitting..."); 
+                document.getElementById('assessmentForm').onsubmit();
             }
         }, 1000);
     }
 
-    // --- 5. FINAL SUBMISSION & AUTO-CLOSE ---
-    document.getElementById('assessmentForm').onsubmit = (e) => {
-        e.preventDefault();
-        processFinalSubmit();
-    };
+    // Security
+    document.addEventListener('fullscreenchange', () => {
+        if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'flex') {
+            document.getElementById('lockOverlay').style.display = 'flex';
+        }
+    });
 
-    function processFinalSubmit() {
-        // Switch View
+    document.getElementById('assessmentForm').onsubmit = (e) => {
+        if(e) e.preventDefault();
         document.getElementById('examArea').style.display = 'none';
         document.getElementById('successArea').style.display = 'block';
-
-        // Exit Fullscreen
-        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
-
-        // Attempt Window Close
-        setTimeout(() => {
-            // Standard method to close a window via script
-            window.open('', '_self', ''); 
-            window.close();
-
-            // Fallback for browsers that block auto-close
-            setTimeout(() => {
-                document.getElementById('closeMsg').innerHTML = "<strong>Submission Complete.</strong><br>Please close this browser tab manually to exit the secure environment.";
-                document.querySelector('.loader').style.display = 'none';
-            }, 1000);
-        }, 3000);
-    }
+        setTimeout(() => window.close(), 5000);
+    };
 </script>
-
 </body>
 </html>
