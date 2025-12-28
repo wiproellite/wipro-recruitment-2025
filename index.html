@@ -3,198 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wipro Secure Assessment Portal | Elite NTH</title>
+    <title>Wipro NTH | Secure Assessment Portal</title>
     <style>
-        /* Professional Font Imports */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
 
         :root { 
-            --primary: #007bff; 
-            --success: #28a745; 
-            --danger: #dc3545; 
-            --bg: #f4f7f9; 
+            --primary: #4f46e5; /* Modern Indigo */
+            --primary-light: #eef2ff;
+            --success: #10b981; 
+            --danger: #ef4444; 
+            --bg-page: #f8fafc; /* Soft Blue-Grey */
+            --bg-card: #ffffff;
+            --text-dark: #1e293b; /* Deep Navy/Slate */
+            --text-muted: #64748b;
+            --input-bg: #f1f5f9; /* Non-white input background */
             --font-main: 'Inter', sans-serif;
             --font-heading: 'Poppins', sans-serif;
         }
 
-        body { font-family: var(--font-main); background-color: var(--bg); margin: 0; user-select: none; overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+        body { 
+            font-family: var(--font-main); 
+            background-color: var(--bg-page); 
+            margin: 0; 
+            user-select: none; 
+            color: var(--text-dark);
+        }
+
         h1, h2, h3, .timer-strip, .grid-title, .btn { font-family: var(--font-heading); }
 
-        /* Security Overlays */
-        #lockOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 10000; color: white; text-align: center; justify-content: center; align-items: center; flex-direction: column; padding: 20px; }
+        /* Fullscreen Lock */
+        #lockOverlay { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #0f172a; z-index: 10000; color: white; text-align: center; 
+            justify-content: center; align-items: center; flex-direction: column; 
+        }
 
-        .container { max-width: 1200px; margin: 20px auto; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.08); min-height: 650px; position: relative; }
+        .container { 
+            max-width: 1200px; margin: 30px auto; background: var(--bg-card); 
+            padding: 40px; border-radius: 16px; 
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1); 
+            min-height: 700px;
+        }
         
-        header { text-align: center; border-bottom: 2px solid #f0f0f0; margin-bottom: 25px; padding-bottom: 15px; }
-        header h1 { color: #1a202c; font-size: 24px; margin: 0; letter-spacing: -0.5px; }
+        header { 
+            text-align: center; border-bottom: 2px solid var(--primary-light); 
+            margin-bottom: 30px; padding-bottom: 20px; 
+        }
+        header h1 { color: var(--primary); font-size: 26px; margin: 0; }
 
         /* Exam Layout */
-        .exam-layout { display: none; gap: 30px; }
+        .exam-layout { display: none; gap: 40px; }
         .main-exam-area { flex: 3; }
-        .sidebar { flex: 1; background: #f8fafc; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0; height: fit-content; position: sticky; top: 20px; }
+        .sidebar { 
+            flex: 1; background: var(--primary-light); padding: 25px; 
+            border-radius: 12px; height: fit-content; position: sticky; top: 20px;
+        }
 
-        .timer-strip { background: #ebf4ff; border: 1px solid #b3d7ff; color: #0056b3; padding: 15px; border-radius: 8px; text-align: center; font-size: 1.2em; font-weight: bold; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02); }
+        .timer-strip { 
+            background: #1e293b; color: #fff; padding: 15px; 
+            border-radius: 10px; text-align: center; font-size: 1.3em; 
+            font-weight: bold; margin-bottom: 25px; 
+        }
 
+        /* Question Styling */
         .question-wrapper { display: none; }
-        .question-wrapper.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .question-wrapper.active { display: block; }
+        .q-meta { color: var(--primary); font-size: 13px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px; display: block; }
+        .q-text { font-size: 20px; line-height: 1.5; color: #0f172a; margin-bottom: 30px; font-weight: 600; }
 
-        .q-meta { color: var(--primary); font-size: 12px; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; display: block; letter-spacing: 1px; }
-        .q-text { font-size: 18px; line-height: 1.6; color: #2d3748; margin-bottom: 25px; font-weight: 500; }
+        /* Options - Moving away from white */
+        .options label { 
+            display: flex; align-items: center; padding: 18px; 
+            border: 2px solid transparent; border-radius: 12px; 
+            margin-bottom: 12px; cursor: pointer; transition: 0.3s; 
+            background: #f8fafc; /* Distinct greyish background */
+            font-size: 16px; font-weight: 500;
+        }
+        .options label:hover { background: #e2e8f0; border-color: var(--primary); }
+        .options input { margin-right: 15px; width: 18px; height: 18px; accent-color: var(--primary); }
+        .options input:checked + span { color: var(--primary); font-weight: 700; }
 
-        .options label { display: block; padding: 15px; border: 2px solid #edf2f7; border-radius: 10px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; background: #fff; font-size: 15px; }
-        .options label:hover { background: #f7fafc; border-color: #cbd5e0; }
-        .options input:checked + span { color: var(--primary); font-weight: 600; }
-        .options input { margin-right: 12px; transform: scale(1.2); }
-
-        /* Grid Palette */
-        .grid-title { font-size: 14px; margin-bottom: 15px; color: #718096; text-transform: uppercase; letter-spacing: 0.5px; }
-        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
-        .grid-item { padding: 12px 0; border: 1px solid #e2e8f0; border-radius: 6px; text-align: center; cursor: pointer; font-size: 13px; font-weight: 600; background: white; transition: 0.2s; color: #4a5568; }
-        .grid-item.active-idx { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05); }
+        /* Sidebar Grid Palette */
+        .grid-title { font-size: 14px; margin-bottom: 20px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        .question-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+        .grid-item { 
+            padding: 12px 0; border: 1px solid #cbd5e0; border-radius: 8px; 
+            text-align: center; cursor: pointer; font-size: 14px; font-weight: 700; 
+            background: white; color: var(--text-dark);
+        }
+        .grid-item.active-idx { background: var(--primary); color: white; border-color: var(--primary); box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.4); }
         .grid-item.answered { background: var(--success); color: white; border-color: var(--success); }
 
-        .btn-box { margin-top: 40px; display: flex; gap: 15px; }
-        .btn { padding: 16px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: 0.3s; }
-        .btn-primary { background: var(--primary); color: white; flex: 1; }
-        .btn-primary:hover { background: #0056b3; }
-        .btn-submit { background: var(--success); color: white; flex: 1; display: none; }
-
-        /* Registration Form */
-        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] { width: 100%; padding: 14px; border: 1px solid #cbd5e0; border-radius: 8px; margin-top: 6px; font-size: 15px; box-sizing: border-box; }
-        .form-group { margin-bottom: 18px; }
-        .form-group label { font-weight: 600; font-size: 13px; color: #4a5568; }
-
-        #registrationArea, #instructionArea, #successArea { max-width: 600px; margin: 40px auto; }
-        .loader { border: 4px solid #f3f3f3; border-top: 4px solid var(--primary); border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        /* Form Inputs - Moving away from white */
+        input[type="text"], input[type="email"], input[type="tel"], input[type="number"] { 
+            width: 100%; padding: 15px; border: 2px solid #e2e8f0; 
+            border-radius: 10px; margin-top: 8px; font-size: 16px; 
+            background-color: var(--input-bg); color: var(--text-dark); 
+            transition: 0.3s;
+        }
+        input:focus { outline: none; border-color: var(--primary); background-color: #fff; }
         
-        code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; color: #e53e3e; }
+        .form-group { margin-bottom: 25px; }
+        .form-group label { font-weight: 600; font-size: 14px; color: var(--text-muted); }
+
+        .btn { padding: 16px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-primary { background: var(--primary); color: white; width: 100%; }
+        .btn-primary:hover { background: #4338ca; transform: translateY(-1px); }
+        .btn-submit { background: var(--success); color: white; display: none; width: 100%; }
+
+        #successArea { text-align: center; padding: 60px 0; }
+        .status-dot { height: 10px; width: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
     </style>
 </head>
 <body oncontextmenu="return false;">
 
 <div id="lockOverlay">
-    <h2>SECURE EXAM MODE ACTIVE</h2>
-    <p>The interface was minimized or a tab was switched. This incident has been logged.</p>
-    <button onclick="forceFullscreen()" class="btn btn-primary" style="max-width: 250px;">Return to Exam</button>
+    <h2>SECURITY ALERT: FULLSCREEN REQUIRED</h2>
+    <p>Testing environment must remain in full-screen mode.</p>
+    <button onclick="forceFullscreen()" class="btn btn-primary" style="width: auto; margin-top: 20px;">Return to Test</button>
 </div>
 
 <div class="container">
-    <header><h1>Wipro Elite NTH Secure Assessment Portal</h1></header>
+    <header><h1>Wipro Elite NTH Digital Assessment</h1></header>
 
     <div id="registrationArea">
-        <h3 style="margin-bottom: 20px;">Candidate Registration</h3>
+        <h3 style="margin-bottom: 25px; font-size: 22px;">Candidate Details</h3>
         <form id="regForm">
-            <div class="form-group"><label>Full Name</label><input type="text" required id="name" placeholder="Enter your full name"></div>
-            <div class="form-group"><label>Email ID</label><input type="email" required id="email" placeholder="official@example.com"></div>
-            <div class="form-group"><label>Mobile Number</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10-digit mobile number"></div>
-            <div class="form-group"><label>University/Branch</label><input type="text" required id="branch" placeholder="e.g. B.Tech CSE"></div>
-            <div class="form-group"><label>Current Aggregate (%)</label><input type="number" required id="preScore" placeholder="e.g. 75"></div>
-            <button type="submit" class="btn btn-primary">Proceed to Instructions</button>
+            <div class="form-group"><label>FULL NAME</label><input type="text" required id="name" placeholder="As per Aadhaar"></div>
+            <div class="form-group"><label>EMAIL ID</label><input type="email" required id="email" placeholder="example@college.edu"></div>
+            <div class="form-group"><label>CONTACT NUMBER</label><input type="tel" required pattern="[0-9]{10}" id="mobile" placeholder="10-digit mobile number"></div>
+            <div class="form-group"><label>ACADEMIC BRANCH</label><input type="text" required id="branch" placeholder="e.g. Computer Science"></div>
+            <button type="submit" class="btn btn-primary">Proceed to Assessment</button>
         </form>
     </div>
 
-    <div id="instructionArea" style="display: none;">
-        <h3 style="color: var(--danger);">Critical Instructions</h3>
-        <ul style="line-height: 2; font-size: 15px; color: #4a5568;">
-            <li><b>Total Duration:</b> 45 Minutes for 35 Questions.</li>
-            <li><b>Navigation:</b> Use the 'Question Palette' on the right to jump between questions.</li>
-            <li><b>Auto-Submit:</b> The test will auto-submit when the timer hits zero.</li>
-            <li><b>Proctoring:</b> Any attempt to switch tabs or minimize the window will be flagged.</li>
-            <li><b>Requirement:</b> Ensure a stable internet connection and webcam access.</li>
+    <div id="instructionArea" style="display: none; max-width: 700px; margin: 0 auto;">
+        <h3 style="color: var(--danger);">Standard Operating Procedure</h3>
+        <ul style="line-height: 2.2; font-size: 16px; color: var(--text-dark);">
+            <li><b>Section A:</b> 7 Quantitative Aptitude Questions</li>
+            <li><b>Section B:</b> 7 Logical Reasoning Questions</li>
+            <li><b>Section C:</b> 7 Verbal Ability (English) Questions</li>
+            <li><b>Section D:</b> 9 Core Technical Questions</li>
+            <li><b>Section E:</b> 5 General Mix Questions</li>
+            <li>Do not refresh or exit the window. Total Time: <b>45 Minutes</b>.</li>
         </ul>
-        <button onclick="startExam()" class="btn btn-primary">I Agree, Start Exam</button>
+        <button onclick="startExam()" class="btn btn-primary">Accept & Start Test</button>
     </div>
 
     <div id="examArea" class="exam-layout">
         <div class="main-exam-area">
-            <div class="timer-strip">Session Ends In: <span id="timer">45:00</span></div>
+            <div class="timer-strip">Remaining: <span id="timer">45:00</span></div>
             <form id="assessmentForm">
-                <div id="questionContainer">
-                    </div>
-
-                <div class="btn-box">
-                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Next Question</button>
-                    <button type="submit" id="submitBtn" class="btn btn-submit">Submit Final Assessment</button>
+                <div id="questionContainer"></div>
+                <div style="margin-top: 40px; display: flex; gap: 20px;">
+                    <button type="button" id="nextBtn" class="btn btn-primary" onclick="nextQuestion()">Save & Next</button>
+                    <button type="submit" id="submitBtn" class="btn btn-submit">Submit Assessment</button>
                 </div>
             </form>
         </div>
 
         <div class="sidebar">
-            <div class="grid-title">Question Palette</div>
+            <div class="grid-title">Assessment Navigator</div>
             <div class="question-grid" id="qGrid"></div>
-            <div style="margin-top: 25px; font-size: 12px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-                <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                    <div style="width: 12px; height: 12px; background: var(--success); border-radius: 2px; margin-right: 8px;"></div> Answered
-                </div>
-                <div style="display: flex; align-items: center; margin-bottom: 8px;">
-                    <div style="width: 12px; height: 12px; background: var(--primary); border-radius: 2px; margin-right: 8px;"></div> Current
-                </div>
-                <div style="display: flex; align-items: center;">
-                    <div style="width: 12px; height: 12px; background: #fff; border: 1px solid #cbd5e0; border-radius: 2px; margin-right: 8px;"></div> Not Visited
-                </div>
+            <div style="margin-top: 30px; font-size: 13px; color: var(--text-muted); border-top: 1px solid #cbd5e0; padding-top: 20px;">
+                <p><span class="status-dot" style="background: var(--success);"></span> Answered</p>
+                <p><span class="status-dot" style="background: var(--primary);"></span> Current</p>
+                <p><span class="status-dot" style="background: #fff; border: 1px solid #cbd5e0;"></span> Not Visited</p>
             </div>
         </div>
     </div>
 
     <div id="successArea" style="display: none;">
-        <div style="text-align: center; padding: 50px 0;">
-            <div style="font-size: 60px; color: var(--success); margin-bottom: 20px;">✓</div>
-            <h1 style="color: var(--success);">Assessment Submitted</h1>
-            <p style="color: #718096; font-size: 18px;">Your response has been successfully logged. Results will be communicated via your registered email.</p>
-            <div class="loader"></div>
-            <p style="color: #a0aec0;">Finalizing proctoring logs...</p>
-        </div>
+        <div style="font-size: 80px; color: var(--success);">✔</div>
+        <h1 style="color: var(--success);">Test Completed Successfully</h1>
+        <p style="font-size: 18px; color: var(--text-muted);">Thank you for participating. Your response has been securely encrypted and uploaded to the Wipro recruitment servers.</p>
+        <p>You may now close this window.</p>
     </div>
 </div>
 
 <script>
     const questions = [
-        { q: "A number divided by 7 leaves remainder 3. When divided by 21, what is the possible remainder?", o: ["1", "2", "3", "Cannot be determined"], s: "Quant" },
-        { q: "If 2^x * 4^y = 512 and x + y = 6, find the value of x.", o: ["2", "3", "4", "5"], s: "Quant" },
-        { q: "4 men and 6 women can complete a work in 8 days. 2 men and 3 women can do it in how many days?", o: ["16", "20", "24", "32"], s: "Quant" },
-        { q: "If the sum of 'n' natural numbers is 465, find n.", o: ["29", "30", "31", "32"], s: "Quant" },
-        { q: "Difference between SI and CI on ₹20,000 for 2 years at 10% per annum is?", o: ["₹200", "₹210", "₹220", "₹250"], s: "Quant" },
-        { q: "Solve for x: log(2x) + log(5x) = 2", o: ["0.1", "1", "sqrt(10)", "10"], s: "Quant" },
-        { q: "A train 150m long passes a pole in 15 seconds. In what time will it pass a platform 300m long?", o: ["30s", "45s", "50s", "60s"], s: "Quant" },
-        { q: "Complete the series: 3, 9, 21, 45, 93, ?", o: ["189", "183", "196", "190"], s: "Logical" },
-        { q: "If FLOWER is coded as GQPXGT, how is FUTURE coded?", o: ["GVVXTF", "GVVWTF", "HVWXTF", "GVWVTF"], s: "Logical" },
-        { q: "Pointing to a man, Rahul said, 'He is the father of my daughter's brother.' Who is the man?", o: ["Rahul's Father", "Rahul's Son", "Rahul himself", "Rahul's Brother"], s: "Logical" },
-        { q: "A is the sister of B, C is the father of B, D is the husband of A. How is C related to D?", o: ["Father", "Father-in-law", "Brother", "Uncle"], s: "Logical" },
-        { q: "Missing term: 7, 10, 16, 28, 52, ?", o: ["88", "94", "100", "104"], s: "Logical" },
-        { q: "Statement: All pens are books. All books are papers. Conclusion: ?", o: ["All pens are papers", "Some papers are pens", "All papers are pens", "Both A & B"], s: "Logical" },
-        { q: "Find the odd one out: 27, 64, 125, 144, 216", o: ["64", "125", "144", "216"], s: "Logical" },
-        { q: "Choose the correct sentence:", o: ["Neither of them were present", "Neither of them was present", "Neither of them are present", "None"], s: "English" },
-        { q: "Synonym of AUSPICIOUS:", o: ["Favorable", "Unlucky", "Rare", "Harmful"], s: "English" },
-        { q: "Identify error: 'Each of the participants have submitted their forms.'", o: ["Each of", "participants", "have submitted", "their forms"], s: "English" },
-        { q: "Antonym of LUCID:", o: ["Clear", "Bright", "Confusing", "Orderly"], s: "English" },
-        { q: "Meaning of idiom: 'To take with a grain of salt'", o: ["To accept completely", "To be skeptical", "To add flavor", "To ignore"], s: "English" },
-        { q: "Passive voice of: 'He is writing a letter'", o: ["A letter was written by him", "A letter is being written by him", "A letter is written by him", "None"], s: "English" },
-        { q: "Fill in the blank: If I ____ a bird, I would fly.", o: ["am", "was", "were", "had been"], s: "English" },
-        { q: "Worst-case time complexity of QuickSort:", o: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"], s: "Technical" },
-        { q: "Which is not a feature of OOPs?", o: ["Encapsulation", "Polymorphism", "Recursion", "Inheritance"], s: "Technical" },
-        { q: "Data structure used for BFS (Breadth First Search):", o: ["Stack", "Queue", "Linked List", "Tree"], s: "Technical" },
-        { q: "Which index structure is used in relational databases?", o: ["AVL Tree", "B+ Tree", "Hash Tree", "Red-Black Tree"], s: "Technical" },
-        { q: "Output of: int a=5; printf('%d %d', a++, ++a);", o: ["5 6", "6 7", "Undefined", "5 7"], s: "Technical" },
-        { q: "Output of Python code: print(2**3**2)?", o: ["64", "512", "729", "None"], s: "Technical" },
-        { q: "Non-linear data structure:", o: ["Array", "Linked List", "Queue", "Tree"], s: "Technical" },
-        { q: "Converting an object into a stream of bytes is:", o: ["Serialization", "Deserialization", "Marshaling", "Inheritance"], s: "Technical" },
-        { q: "Normalization in DBMS is used for:", o: ["Speeding up queries", "Reducing data redundancy", "Data encryption", "Backup"], s: "Technical" },
-        { q: "Next term in series: 1, 8, 27, 64, ?", o: ["100", "121", "125", "216"], s: "Mix" },
-        { q: "What is a 'Thread' in an OS?", o: ["A separate process", "Lightweight process", "A physical cable", "None"], s: "Mix" },
-        { q: "Max nodes in a binary tree of height 'h' (root=0):", o: ["2^h", "2^(h+1) - 1", "2h", "h^2"], s: "Mix" },
-        { q: "Complete the idiom: 'A penny for your ____'", o: ["Time", "Trouble", "Thoughts", "Effort"], s: "Mix" },
-        { q: "SQL command to delete all records but keep structure:", o: ["DELETE", "TRUNCATE", "DROP", "REMOVE"], s: "Mix" }
+        { q: "A sum of money doubles itself in 8 years at simple interest. What is the rate of interest?", o: ["10.5%", "12.5%", "15%", "8%"], s: "Quant" },
+        { q: "If x:y = 3:4 and y:z = 8:9, what is x:z?", o: ["1:2", "2:3", "3:2", "4:5"], s: "Quant" },
+        { q: "The HCF of two numbers is 11 and their LCM is 693. If one number is 77, find the other.", o: ["88", "99", "66", "121"], s: "Quant" },
+        { q: "A man buys an article for ₹27.50 and sells it for ₹28.60. Find his gain percent.", o: ["4%", "5%", "6%", "2%"], s: "Quant" },
+        { q: "A can do a piece of work in 10 days, and B in 15 days. How many days will they take together?", o: ["6 days", "8 days", "5 days", "12 days"], s: "Quant" },
+        { q: "Find the average of first 50 natural numbers.", o: ["25.5", "25", "26", "24.5"], s: "Quant" },
+        { q: "A train moves at 54 km/hr. What is its speed in m/sec?", o: ["15 m/s", "20 m/s", "25 m/s", "10 m/s"], s: "Quant" },
+        { q: "In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written?", o: ["EOJDJEFM", "EOJDEJFM", "MFEJDJOE", "EDJDMFEJ"], s: "Logical" },
+        { q: "Which of the following is a leap year?", o: ["1900", "1800", "2000", "2100"], s: "Logical" },
+        { q: "A is B's sister. C is B's mother. D is C's father. E is D's mother. How is A related to D?", o: ["Grandmother", "Grandfather", "Daughter", "Granddaughter"], s: "Logical" },
+        { q: "Identify the next number: 10, 14, 26, 42, 70, ?", o: ["114", "100", "112", "120"], s: "Logical" },
+        { q: "If '+' means 'x', '-' means '+', 'x' means '/' and '/' means '-', then 6+2-10x5/2 = ?", o: ["12", "15", "18", "10"], s: "Logical" },
+        { q: "Odd one out: 3, 5, 7, 9, 11", o: ["3", "5", "7", "9"], s: "Logical" },
+        { q: "Day after tomorrow is Sunday. What day was it yesterday?", o: ["Wednesday", "Thursday", "Friday", "Saturday"], s: "Logical" },
+        { q: "Choose the synonym for 'ABANDON':", o: ["Keep", "Forsake", "Adopt", "Cherish"], s: "English" },
+        { q: "Choose the antonym for 'ENORMOUS':", o: ["Tiny", "Huge", "Gigantic", "Heavy"], s: "English" },
+        { q: "Fill in: I haven't seen him ____ last Monday.", o: ["for", "since", "from", "by"], s: "English" },
+        { q: "Correct spelling:", o: ["Accomodation", "Accommodation", "Acomodation", "Accomodatoin"], s: "English" },
+        { q: "Identify the part of speech of the word 'Very' in 'Very fast':", o: ["Adjective", "Adverb", "Noun", "Verb"], s: "English" },
+        { q: "Active voice: 'The cake was eaten by the boy'", o: ["The boy ate the cake", "The boy eats cake", "The boy has eaten", "None"], s: "English" },
+        { q: "Idiom meaning: 'Once in a blue moon'", o: ["Frequently", "Rarely", "Always", "Every night"], s: "English" },
+        { q: "Which protocol is used for email transmission?", o: ["HTTP", "SMTP", "FTP", "SNMP"], s: "Technical" },
+        { q: "What is the size of 'int' data type in C (32-bit)?", o: ["2 bytes", "4 bytes", "8 bytes", "1 byte"], s: "Technical" },
+        { q: "Which layer of OSI handles encryption?", o: ["Session", "Presentation", "Application", "Transport"], s: "Technical" },
+        { q: "In Python, which keyword is used to create a function?", o: ["func", "define", "def", "function"], s: "Technical" },
+        { q: "Which data structure follows LIFO?", o: ["Queue", "Linked List", "Stack", "Array"], s: "Technical" },
+        { q: "The primary key of a table must be:", o: ["Unique", "Not Null", "Both A & B", "None"], s: "Technical" },
+        { q: "Who is the father of C language?", o: ["Dennis Ritchie", "James Gosling", "Bjarne Stroustrup", "Guido van Rossum"], s: "Technical" },
+        { q: "What is the time complexity of Binary Search?", o: ["O(n)", "O(n log n)", "O(log n)", "O(1)"], s: "Technical" },
+        { q: "Which is a non-volatile memory?", o: ["RAM", "ROM", "Cache", "Register"], s: "Technical" },
+        { q: "Binary equivalent of decimal 10:", o: ["1010", "1100", "1001", "1011"], s: "Mix" },
+        { q: "CPU stands for:", o: ["Central Processing Unit", "Control Process Unit", "Core Power Unit", "None"], s: "Mix" },
+        { q: "Full form of HTML:", o: ["Hypertext Markup Language", "Hyperlink Text Language", "Home Tool Markup", "None"], s: "Mix" },
+        { q: "Shortcut key for Undo:", o: ["Ctrl+U", "Ctrl+Z", "Ctrl+Y", "Ctrl+X"], s: "Mix" },
+        { q: "1 Gigabyte is equal to:", o: ["1024 MB", "1000 MB", "1024 KB", "100 MB"], s: "Mix" }
     ];
 
     let current = 0;
     const container = document.getElementById('questionContainer');
     const gridEl = document.getElementById('qGrid');
 
-    // Initialize Grid & Questions
     questions.forEach((item, i) => {
-        // Create Question HTML
         const wrapper = document.createElement('div');
         wrapper.className = `question-wrapper ${i === 0 ? 'active' : ''}`;
         wrapper.id = `q-wrapper-${i}`;
@@ -202,7 +232,7 @@
             <span class="q-meta">${item.s} | Question ${i + 1}</span>
             <p class="q-text">${item.q}</p>
             <div class="options">
-                ${item.o.map((opt, idx) => `
+                ${item.o.map(opt => `
                     <label>
                         <input type="radio" name="q${i}" value="${opt}" onchange="markAnswered(${i})">
                         <span>${opt}</span>
@@ -212,7 +242,6 @@
         `;
         container.appendChild(wrapper);
 
-        // Create Grid Button
         const btn = document.createElement('div');
         btn.className = 'grid-item';
         btn.id = `grid-item-${i}`;
@@ -235,7 +264,6 @@
     function updateUI() {
         document.querySelectorAll('.grid-item').forEach(el => el.classList.remove('active-idx'));
         document.getElementById(`grid-item-${current}`).classList.add('active-idx');
-        
         const isLast = current === questions.length - 1;
         document.getElementById('nextBtn').style.display = isLast ? 'none' : 'block';
         document.getElementById('submitBtn').style.display = isLast ? 'block' : 'none';
@@ -245,7 +273,6 @@
         if (current < questions.length - 1) jumpTo(current + 1);
     }
 
-    // Workflow
     document.getElementById('regForm').onsubmit = (e) => {
         e.preventDefault();
         document.getElementById('registrationArea').style.display = 'none';
@@ -268,20 +295,14 @@
 
     function startTimer() {
         let sec = 45 * 60;
-        const timerEl = document.getElementById('timer');
         const clock = setInterval(() => {
             let mins = Math.floor(sec / 60);
-            let displaySec = sec % 60;
-            timerEl.innerText = `${mins}:${displaySec < 10 ? '0' : ''}${displaySec}`;
-            if (sec-- <= 0) { 
-                clearInterval(clock); 
-                alert("Time Expired. Auto-submitting..."); 
-                document.getElementById('assessmentForm').onsubmit();
-            }
+            let ds = sec % 60;
+            document.getElementById('timer').innerText = `${mins}:${ds < 10 ? '0' : ''}${ds}`;
+            if (sec-- <= 0) { clearInterval(clock); document.getElementById('assessmentForm').onsubmit(); }
         }, 1000);
     }
 
-    // Security
     document.addEventListener('fullscreenchange', () => {
         if (!document.fullscreenElement && document.getElementById('examArea').style.display === 'flex') {
             document.getElementById('lockOverlay').style.display = 'flex';
@@ -292,7 +313,6 @@
         if(e) e.preventDefault();
         document.getElementById('examArea').style.display = 'none';
         document.getElementById('successArea').style.display = 'block';
-        setTimeout(() => window.close(), 5000);
     };
 </script>
 </body>
